@@ -97,6 +97,16 @@ export function EmptyState({
   );
 }
 
+// ─── ProgressBar ───
+export function ProgressBar({ value }: { value: number }) {
+  const pct = Math.max(0, Math.min(100, value));
+  return (
+    <div className="h-2 w-full overflow-hidden rounded-full bg-border">
+      <div className="h-full rounded-full bg-grad" style={{ width: `${pct}%` }} />
+    </div>
+  );
+}
+
 // ─── Logo ───
 export function Logo({ className = "" }: { className?: string }) {
   return (

@@ -1,4 +1,5 @@
 import { PrismaClient, Virtue } from "@prisma/client";
+import { currentQuarter } from "../src/server/services/okr";
 
 const db = new PrismaClient();
 
@@ -85,6 +86,40 @@ async function main() {
         agenda: "Check-in trimestral",
         focusVirtue: "CORAGEM",
         mood: 4,
+      },
+    });
+
+    // Um objetivo (OKR) com progresso auto-calculado a partir dos KRs
+    await db.goal.create({
+      data: {
+        organizationId: org.id,
+        teamMemberId: member.id,
+        objective: "Elevar a qualidade das entregas do trimestre",
+        quarter: currentQuarter(),
+        progress: 55,
+        keyResults: {
+          create: [
+            { title: "Reduzir bugs em produção", target: 10, current: 6, unit: "un." },
+            { title: "Cobertura de testes", target: 80, current: 44, unit: "%" },
+          ],
+        },
+      },
+    });
+
+    // Um PDI do trimestre
+    await db.pDI.create({
+      data: {
+        organizationId: org.id,
+        teamMemberId: member.id,
+        quarter: currentQuarter(),
+        focusVirtue: "HUMILDADE",
+        competency: "Pedir e incorporar feedback com abertura",
+        actions: {
+          create: [
+            { text: "Pedir feedback ao fim de cada sprint", done: true },
+            { text: "Registrar 1 aprendizado por semana", done: false },
+          ],
+        },
       },
     });
   }

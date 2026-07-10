@@ -6,17 +6,25 @@ import { Card, EmptyState } from "@/components/ui";
 import { VirtueRadar } from "@/components/charts/VirtueRadar";
 import { VirtueBadge } from "@/components/VirtueBadge";
 import { FeedbackCard } from "@/components/FeedbackCard";
+import { GoalCard } from "@/components/GoalCard";
+import { PdiCard } from "@/components/PdiCard";
 import { teamRadar } from "@/server/services/virtue-score";
+import { currentQuarter } from "@/server/services/okr";
 import { isStale, daysSince } from "@/server/services/alerts";
 import { formatDateTime } from "@/lib/format";
 import { NewOneOnOneForm } from "../../um-a-um/OneOnOneForms";
 import { FeedbackForm } from "../../feedback/FeedbackForm";
+import { NewGoalForm } from "../../metas/GoalForms";
+import { NewPdiForm } from "../../pdi/PdiForms";
 import { ProfileForm } from "./ProfileForm";
+import { MemberTabs, MEMBER_TABS, type MemberTabKey } from "./MemberTabs";
 
 export default async function MemberPage({
   params,
+  searchParams,
 }: {
   params: { memberId: string };
+  searchParams: { tab?: string };
 }) {
   const { org } = await getContext();
 
@@ -25,12 +33,6 @@ export default async function MemberPage({
     include: {
       profile: true,
       leader: { select: { name: true } },
-      oneOnOnes: {
-        orderBy: { scheduledAt: "desc" },
-        take: 10,
-        include: { actionItems: true },
-      },
-      feedbacks: { orderBy: { createdAt: "desc" }, take: 10 },
       virtueScores: {
         select: { teamMemberId: true, virtue: true, score: true, recordedAt: true },
       },
@@ -38,13 +40,15 @@ export default async function MemberPage({
   });
   if (!member) notFound();
 
+  const tab: MemberTabKey = MEMBER_TABS.some((t) => t.key === searchParams.tab)
+    ? (searchParams.tab as MemberTabKey)
+    : "visao";
+
   const radar = teamRadar(member.virtueScores);
-  const lastDone = member.oneOnOnes.find((o) => o.status === "DONE");
-  const stale = isStale(lastDone?.scheduledAt ?? null);
 
   return (
     <div>
-      <div className="mb-6 flex items-center gap-2 text-sm text-muted">
+      <div className="mb-4 flex items-center gap-2 text-sm text-muted">
         <Link href="/equipe" className="hover:text-blue">
           Equipe
         </Link>
@@ -52,60 +56,17 @@ export default async function MemberPage({
         <span className="text-deep">{member.name}</span>
       </div>
 
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="font-sora text-2xl font-bold text-deep">{member.name}</h1>
-          <p className="text-sm text-muted">
-            {member.role ?? "—"} · líder: {member.leader.name ?? "—"}
-          </p>
-        </div>
-        {stale ? (
-          <span className="rounded-full bg-grad-soft px-3 py-1 text-xs font-medium text-purple">
-            {lastDone
-              ? `Sem 1:1 há ${daysSince(lastDone.scheduledAt)} dias`
-              : "Nunca teve 1:1"}
-          </span>
-        ) : null}
+      <div className="mb-6">
+        <h1 className="font-sora text-2xl font-bold text-deep">{member.name}</h1>
+        <p className="text-sm text-muted">
+          {member.role ?? "—"} · líder: {member.leader.name ?? "—"}
+        </p>
       </div>
 
-      {/* Visão geral */}
-      <Section title="Visão geral">
-        <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
-          <Card>
-            <h3 className="font-sora text-base font-semibold text-deep">
-              Radar das virtudes
-            </h3>
-            <VirtueRadar scores={radar} />
-          </Card>
-          <Card>
-            <h3 className="mb-2 font-sora text-base font-semibold text-deep">
-              Últimos 1:1s
-            </h3>
-            {member.oneOnOnes.length === 0 ? (
-              <p className="text-sm text-muted">Nenhum 1:1 registrado ainda.</p>
-            ) : (
-              <ul className="flex flex-col divide-y divide-border">
-                {member.oneOnOnes.slice(0, 5).map((o) => (
-                  <li key={o.id} className="flex items-center justify-between py-2">
-                    <span className="text-sm text-deep">
-                      {formatDateTime(o.scheduledAt)}
-                    </span>
-                    <span className="flex items-center gap-2">
-                      {o.focusVirtue ? <VirtueBadge virtue={o.focusVirtue} /> : null}
-                      {o.mood ? (
-                        <span className="text-xs text-muted">mood {o.mood}/5</span>
-                      ) : null}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Card>
-        </div>
-      </Section>
+      <MemberTabs memberId={member.id} active={tab} />
 
-      {/* Perfil pessoal */}
-      <Section title="Perfil pessoal">
+      {tab === "visao" ? <VisaoTab memberId={member.id} radar={radar} /> : null}
+      {tab === "perfil" ? (
         <Card>
           <p className="mb-4 text-sm text-muted">
             O “manual de instruções” do liderado — use como lembrete em 1:1s e conversas.
@@ -122,46 +83,155 @@ export default async function MemberPage({
             }}
           />
         </Card>
-      </Section>
-
-      {/* 1:1s */}
-      <Section title="1:1s">
-        <Card>
-          <NewOneOnOneForm members={[]} defaultMemberId={member.id} />
-        </Card>
-      </Section>
-
-      {/* Feedbacks */}
-      <Section title="Feedbacks">
-        <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-          <div className="flex flex-col gap-3">
-            {member.feedbacks.length === 0 ? (
-              <EmptyState
-                icon="✎"
-                title="Nenhum feedback ainda"
-                description="Registre o primeiro feedback SBI para esta pessoa ao lado."
-              />
-            ) : (
-              member.feedbacks.map((fb) => <FeedbackCard key={fb.id} fb={fb} />)
-            )}
-          </div>
-          <Card className="h-fit">
-            <h3 className="mb-3 font-sora text-base font-semibold text-deep">
-              Novo feedback
-            </h3>
-            <FeedbackForm members={[]} defaultMemberId={member.id} />
-          </Card>
-        </div>
-      </Section>
+      ) : null}
+      {tab === "um-a-um" ? <OneOnOneTab memberId={member.id} /> : null}
+      {tab === "feedback" ? <FeedbackTab memberId={member.id} /> : null}
+      {tab === "metas" ? <MetasTab memberId={member.id} /> : null}
+      {tab === "pdi" ? <PdiTab memberId={member.id} /> : null}
     </div>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+async function VisaoTab({
+  memberId,
+  radar,
+}: {
+  memberId: string;
+  radar: Parameters<typeof VirtueRadar>[0]["scores"];
+}) {
+  const { org } = await getContext();
+  const oneOnOnes = await db.oneOnOne.findMany({
+    where: { organizationId: org.id, teamMemberId: memberId },
+    orderBy: { scheduledAt: "desc" },
+    take: 5,
+  });
+  const lastDone = oneOnOnes.find((o) => o.status === "DONE");
+  const stale = isStale(lastDone?.scheduledAt ?? null);
+
   return (
-    <section className="mb-8">
-      <h2 className="mb-3 font-sora text-lg font-semibold text-deep">{title}</h2>
-      {children}
-    </section>
+    <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
+      <Card>
+        <h3 className="font-sora text-base font-semibold text-deep">Radar das virtudes</h3>
+        <VirtueRadar scores={radar} />
+      </Card>
+      <Card>
+        <div className="mb-2 flex items-center justify-between">
+          <h3 className="font-sora text-base font-semibold text-deep">Últimos 1:1s</h3>
+          {stale ? (
+            <span className="rounded-full bg-grad-soft px-2 py-0.5 text-xs font-medium text-purple">
+              {lastDone ? `Sem 1:1 há ${daysSince(lastDone.scheduledAt)} dias` : "Nunca teve 1:1"}
+            </span>
+          ) : null}
+        </div>
+        {oneOnOnes.length === 0 ? (
+          <p className="text-sm text-muted">Nenhum 1:1 registrado ainda.</p>
+        ) : (
+          <ul className="flex flex-col divide-y divide-border">
+            {oneOnOnes.map((o) => (
+              <li key={o.id} className="flex items-center justify-between py-2">
+                <span className="text-sm text-deep">{formatDateTime(o.scheduledAt)}</span>
+                <span className="flex items-center gap-2">
+                  {o.focusVirtue ? <VirtueBadge virtue={o.focusVirtue} /> : null}
+                  {o.mood ? <span className="text-xs text-muted">mood {o.mood}/5</span> : null}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
+    </div>
+  );
+}
+
+async function OneOnOneTab({ memberId }: { memberId: string }) {
+  return (
+    <Card className="max-w-lg">
+      <h3 className="mb-3 font-sora text-base font-semibold text-deep">Agendar 1:1</h3>
+      <NewOneOnOneForm members={[]} defaultMemberId={memberId} />
+    </Card>
+  );
+}
+
+async function FeedbackTab({ memberId }: { memberId: string }) {
+  const { org } = await getContext();
+  const feedbacks = await db.feedback.findMany({
+    where: { organizationId: org.id, teamMemberId: memberId },
+    orderBy: { createdAt: "desc" },
+    take: 20,
+  });
+  return (
+    <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+      <div className="flex flex-col gap-3">
+        {feedbacks.length === 0 ? (
+          <EmptyState
+            icon="✎"
+            title="Nenhum feedback ainda"
+            description="Registre o primeiro feedback SBI para esta pessoa ao lado."
+          />
+        ) : (
+          feedbacks.map((fb) => <FeedbackCard key={fb.id} fb={fb} />)
+        )}
+      </div>
+      <Card className="h-fit">
+        <h3 className="mb-3 font-sora text-base font-semibold text-deep">Novo feedback</h3>
+        <FeedbackForm members={[]} defaultMemberId={memberId} />
+      </Card>
+    </div>
+  );
+}
+
+async function MetasTab({ memberId }: { memberId: string }) {
+  const { org } = await getContext();
+  const goals = await db.goal.findMany({
+    where: { organizationId: org.id, teamMemberId: memberId },
+    orderBy: [{ quarter: "desc" }, { createdAt: "desc" }],
+    include: { keyResults: true },
+  });
+  return (
+    <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+      <div className="flex flex-col gap-3">
+        {goals.length === 0 ? (
+          <EmptyState
+            icon="◉"
+            title="Nenhum objetivo ainda"
+            description="Crie um objetivo com key results. O progresso é calculado automaticamente."
+          />
+        ) : (
+          goals.map((g) => <GoalCard key={g.id} goal={g} />)
+        )}
+      </div>
+      <Card className="h-fit">
+        <h3 className="mb-3 font-sora text-base font-semibold text-deep">Novo objetivo</h3>
+        <NewGoalForm members={[]} defaultMemberId={memberId} quarter={currentQuarter()} />
+      </Card>
+    </div>
+  );
+}
+
+async function PdiTab({ memberId }: { memberId: string }) {
+  const { org } = await getContext();
+  const pdis = await db.pDI.findMany({
+    where: { organizationId: org.id, teamMemberId: memberId },
+    orderBy: [{ quarter: "desc" }, { createdAt: "desc" }],
+    include: { actions: { orderBy: { done: "asc" } } },
+  });
+  return (
+    <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+      <div className="flex flex-col gap-3">
+        {pdis.length === 0 ? (
+          <EmptyState
+            icon="◆"
+            title="Nenhum PDI ainda"
+            description="Monte 1 competência foco por trimestre, com ações e evidências de evolução."
+          />
+        ) : (
+          pdis.map((p) => <PdiCard key={p.id} pdi={p} />)
+        )}
+      </div>
+      <Card className="h-fit">
+        <h3 className="mb-3 font-sora text-base font-semibold text-deep">Novo PDI</h3>
+        <NewPdiForm members={[]} defaultMemberId={memberId} quarter={currentQuarter()} />
+      </Card>
+    </div>
   );
 }
