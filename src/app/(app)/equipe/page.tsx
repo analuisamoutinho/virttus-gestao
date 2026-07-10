@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getContext } from "@/server/context";
 import { db } from "@/server/db";
 import { Card, EmptyState } from "@/components/ui";
@@ -36,16 +37,15 @@ export default async function EquipePage() {
           ) : (
             <div className="flex flex-col gap-2">
               {members.map((m) => (
-                <Card
-                  key={m.id}
-                  className="flex items-center justify-between py-3.5"
-                >
-                  <div>
-                    <p className="text-sm font-semibold text-deep">{m.name}</p>
-                    <p className="text-xs text-muted">{m.role ?? "—"}</p>
-                  </div>
-                  <span className="text-xs text-muted">{m.email ?? ""}</span>
-                </Card>
+                <Link key={m.id} href={`/equipe/${m.id}`} className="block">
+                  <Card className="flex items-center justify-between py-3.5 transition hover:border-blue hover:shadow-md">
+                    <div>
+                      <p className="text-sm font-semibold text-deep">{m.name}</p>
+                      <p className="text-xs text-muted">{m.role ?? "—"}</p>
+                    </div>
+                    <span className="text-xs text-muted">{m.email ?? ""}</span>
+                  </Card>
+                </Link>
               ))}
             </div>
           )}

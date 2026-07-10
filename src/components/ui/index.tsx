@@ -4,14 +4,17 @@ import type { ComponentProps, ReactNode } from "react";
 // ─── Card ───
 export function Card({
   className = "",
+  style,
   children,
 }: {
   className?: string;
+  style?: React.CSSProperties;
   children: ReactNode;
 }) {
   return (
     <div
       className={`rounded-card border border-border bg-white p-6 shadow-sm ${className}`}
+      style={style}
     >
       {children}
     </div>
