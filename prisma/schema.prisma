@@ -1,0 +1,393 @@
+// Virttus — schema multi-tenant. Isolamento LGPD: toda tabela de negócio
+// carrega organizationId e é sempre filtrada por ele.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────── TENANT ───────────────────────────
+enum Plan {
+  STARTER
+  PRO
+  TIME
+}
+
+enum BillingStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  INCOMPLETE
+}
+
+model Organization {
+  id            String        @id @default(cuid())
+  name          String
+  slug          String        @unique
+  plan          Plan          @default(STARTER)
+  billingStatus BillingStatus @default(TRIALING)
+  onboardedAt   DateTime?
+
+  // Stripe (Fase 4)
+  stripeCustomerId     String?   @unique
+  stripeSubscriptionId String?   @unique
+  currentPeriodEnd     DateTime?
+
+  users        User[]
+  teamMembers  TeamMember[]
+  oneOnOnes    OneOnOne[]
+  feedbacks    Feedback[]
+  goals        Goal[]
+  pdis         PDI[]
+  virtueScores VirtueScore[]
+  scripts      ConversationScript[]
+  auditLogs    AuditLog[]
+  invites      Invite[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+}
+
+// ─────────────────────────── AUTH / USERS ───────────────────────────
+enum Role {
+  ADMIN // dono da org, billing
+  LEADER // líder que gere liderados
+  HR // RH: painel agregado, sem editar 1:1 alheio
+  MEMBER // liderado-somente-leitura do próprio perfil
+}
+
+model User {
+  id             String        @id @default(cuid())
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  name          String?
+  email         String
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(LEADER)
+
+  // Auth.js
+  accounts Account[]
+  sessions Session[]
+
+  // relações de negócio
+  ledMembers       TeamMember[] @relation("LeaderToMembers")
+  memberProfile    TeamMember?  @relation("MemberUser")
+  authoredFeedback Feedback[]   @relation("FeedbackAuthor")
+  auditLogs        AuditLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, email])
+  @@index([organizationId])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Invite {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           Role         @default(LEADER)
+  token          String       @unique @default(cuid())
+  acceptedAt     DateTime?
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+
+  @@unique([organizationId, email])
+  @@index([organizationId])
+}
+
+// ─────────────────────────── LIDERADOS ───────────────────────────
+model TeamMember {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  leaderId String
+  leader   User   @relation("LeaderToMembers", fields: [leaderId], references: [id])
+
+  // liderado pode ter login próprio (role MEMBER) ou existir apenas como registro
+  userId String? @unique
+  user   User?   @relation("MemberUser", fields: [userId], references: [id])
+
+  name      String
+  email     String?
+  role      String? // cargo
+  active    Boolean   @default(true)
+  startedAt DateTime?
+
+  profile      PersonalProfile?
+  oneOnOnes    OneOnOne[]
+  feedbacks    Feedback[]
+  goals        Goal[]
+  pdis         PDI[]
+  virtueScores VirtueScore[]
+  scripts      ConversationScript[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([leaderId])
+}
+
+model PersonalProfile {
+  id           String     @id @default(cuid())
+  teamMemberId String     @unique
+  teamMember   TeamMember @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+
+  feedbackPrefs      String? @db.Text
+  motivators         String? @db.Text
+  communicationStyle String? @db.Text
+  strengths          String? @db.Text
+  watchouts          String? @db.Text
+  aspirations        String? @db.Text
+
+  updatedAt DateTime @updatedAt
+}
+
+// ─────────────────────────── VIRTUDES ───────────────────────────
+// 9 virtudes: 2 de liderança (Havard) + 4 cardeais + 3 teologais.
+enum Virtue {
+  MAGNANIMIDADE
+  HUMILDADE
+  PRUDENCIA
+  JUSTICA
+  CORAGEM
+  AUTOCONTROLE
+  FE
+  ESPERANCA
+  CARIDADE
+}
+
+enum VirtueGroup {
+  LIDERANCA
+  CARDEAL
+  TEOLOGAL
+}
+
+model VirtueScore {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  teamMemberId   String
+  teamMember     TeamMember   @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+
+  virtue     Virtue
+  score      Float // 0–10 (série histórica → radar + evolução)
+  source     String? // "1:1", "assessment", "manual"
+  recordedAt DateTime @default(now())
+
+  @@index([organizationId])
+  @@index([teamMemberId, virtue])
+}
+
+// ─────────────────────────── 1:1 ───────────────────────────
+enum OneOnOneStatus {
+  SCHEDULED
+  DONE
+  CANCELED
+}
+
+model OneOnOne {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  teamMemberId   String
+  teamMember     TeamMember   @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+
+  scheduledAt DateTime
+  status      OneOnOneStatus @default(SCHEDULED)
+  agenda      String?        @db.Text
+  notes       String?        @db.Text
+  focusVirtue Virtue?
+  mood        Int? // 1–5
+  actionItems ActionItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([teamMemberId, scheduledAt])
+}
+
+model ActionItem {
+  id         String    @id @default(cuid())
+  oneOnOneId String
+  oneOnOne   OneOnOne  @relation(fields: [oneOnOneId], references: [id], onDelete: Cascade)
+  text       String
+  done       Boolean   @default(false)
+  dueDate    DateTime?
+
+  @@index([oneOnOneId])
+}
+
+// ─────────────────────────── FEEDBACK (SBI) ───────────────────────────
+enum FeedbackType {
+  RECOGNITION
+  CONSTRUCTIVE
+}
+
+model Feedback {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  teamMemberId   String
+  teamMember     TeamMember   @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  authorId       String
+  author         User         @relation("FeedbackAuthor", fields: [authorId], references: [id])
+
+  type      FeedbackType
+  situation String       @db.Text
+  behavior  String       @db.Text
+  impact    String       @db.Text
+  virtue    Virtue?
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId])
+  @@index([teamMemberId, createdAt])
+}
+
+// ─────────────────────────── METAS / OKR ───────────────────────────
+model Goal {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  teamMemberId   String
+  teamMember     TeamMember   @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+
+  objective  String
+  quarter    String // ex "2026-Q3"
+  progress   Float       @default(0) // auto-calculado a partir dos KRs
+  keyResults KeyResult[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([teamMemberId])
+}
+
+model KeyResult {
+  id      String  @id @default(cuid())
+  goalId  String
+  goal    Goal    @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  title   String
+  target  Float
+  current Float   @default(0)
+  unit    String? // %, R$, un.
+
+  @@index([goalId])
+}
+
+// ─────────────────────────── PDI ───────────────────────────
+model PDI {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  teamMemberId   String
+  teamMember     TeamMember   @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+
+  quarter     String // "2026-Q3" — 1 competência foco por trimestre
+  focusVirtue Virtue
+  competency  String
+  actions     PDIAction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teamMemberId, quarter])
+  @@index([organizationId])
+}
+
+model PDIAction {
+  id       String    @id @default(cuid())
+  pdiId    String
+  pdi      PDI       @relation(fields: [pdiId], references: [id], onDelete: Cascade)
+  text     String
+  dueDate  DateTime?
+  done     Boolean   @default(false)
+  evidence String?   @db.Text
+
+  @@index([pdiId])
+}
+
+// ─────────────────────────── CONVERSA (Pro) ───────────────────────────
+model ConversationScript {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  teamMemberId   String
+  teamMember     TeamMember   @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+
+  context   String  @db.Text
+  opening   String? @db.Text
+  questions Json? // perguntas socráticas
+  closing   String? @db.Text
+  engine    String  @default("rules") // "rules" agora, "llm" depois
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId])
+  @@index([teamMemberId])
+}
+
+// ─────────────────────────── AUDITORIA (LGPD) ───────────────────────────
+model AuditLog {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  actorId        String?
+  actor          User?        @relation(fields: [actorId], references: [id])
+
+  action    String // "member.create", "feedback.view", "export.csv"...
+  entity    String // "TeamMember"
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([organizationId, createdAt])
+}
