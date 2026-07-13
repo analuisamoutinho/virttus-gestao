@@ -1,6 +1,11 @@
 import { redirect } from "next/navigation";
 import { auth, signIn } from "@/server/auth";
 import { Card, Button, Logo } from "@/components/ui";
+import { LocalLoginForm } from "./LocalLoginForm";
+
+const GOOGLE_CONFIGURED = Boolean(
+  process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET,
+);
 
 export default async function LoginPage() {
   const session = await auth();
@@ -13,17 +18,23 @@ export default async function LoginPage() {
           <Logo className="text-2xl" />
           <p className="text-sm text-muted">Entre para desenvolver sua equipe.</p>
         </div>
-        <form
-          action={async () => {
-            "use server";
-            await signIn("google", { redirectTo: "/onboarding" });
-          }}
-        >
-          <Button type="submit" variant="outline" className="w-full">
-            <GoogleIcon />
-            Continuar com Google
-          </Button>
-        </form>
+
+        {GOOGLE_CONFIGURED ? (
+          <form
+            action={async () => {
+              "use server";
+              await signIn("google", { redirectTo: "/onboarding" });
+            }}
+          >
+            <Button type="submit" variant="outline" className="w-full">
+              <GoogleIcon />
+              Continuar com Google
+            </Button>
+          </form>
+        ) : (
+          <LocalLoginForm />
+        )}
+
         <p className="mt-6 text-xs text-muted">
           Ao continuar, você concorda com o tratamento de dados conforme a LGPD.
         </p>

@@ -4,20 +4,21 @@ import { useFormState } from "react-dom";
 import { Button } from "@/components/ui";
 import { TextArea, SelectField, FormError } from "@/components/ui/form";
 import { VirtueOptions } from "@/components/VirtueBadge";
-import { createFeedback } from "@/server/actions/feedback";
+import { CONVERSATION_TYPES } from "@/lib/conversation";
+import { createConversationScript } from "@/server/actions/conversation";
 import type { ActionResult } from "@/server/actions/team";
 
 const initial: ActionResult | null = null;
 type MemberOpt = { id: string; name: string };
 
-export function FeedbackForm({
+export function ConversationForm({
   members,
   defaultMemberId,
 }: {
   members: MemberOpt[];
   defaultMemberId?: string;
 }) {
-  const [state, action, pending] = useFormState(createFeedback, initial);
+  const [state, action, pending] = useFormState(createConversationScript, initial);
   return (
     <form action={action} className="flex flex-col gap-3">
       {defaultMemberId ? (
@@ -34,34 +35,28 @@ export function FeedbackForm({
           ))}
         </SelectField>
       )}
-      <SelectField label="Tipo" name="type" required defaultValue="RECOGNITION">
-        <option value="RECOGNITION">Reconhecimento</option>
-        <option value="CONSTRUCTIVE">Construtivo</option>
+      <SelectField label="Tipo de conversa" name="type" required defaultValue="">
+        <option value="" disabled>
+          Selecione…
+        </option>
+        {CONVERSATION_TYPES.map((t) => (
+          <option key={t.key} value={t.key}>
+            {t.label}
+          </option>
+        ))}
       </SelectField>
       <TextArea
-        label="Situação"
+        label="Contexto"
         name="situation"
         required
-        placeholder="Quando e onde aconteceu…"
+        placeholder="O que aconteceu e o que você quer resolver nessa conversa…"
       />
-      <TextArea
-        label="Comportamento"
-        name="behavior"
-        required
-        placeholder="O que a pessoa fez, de forma observável…"
-      />
-      <TextArea
-        label="Impacto"
-        name="impact"
-        required
-        placeholder="Qual foi o efeito no time, no cliente, em você…"
-      />
-      <SelectField label="Virtude relacionada (opcional)" name="virtue" defaultValue="">
+      <SelectField label="Virtude em foco (opcional)" name="focusVirtue" defaultValue="">
         <VirtueOptions />
       </SelectField>
       {state && !state.ok ? <FormError>{state.error}</FormError> : null}
       <Button type="submit" disabled={pending}>
-        {pending ? "Registrando…" : "Registrar feedback"}
+        {pending ? "Gerando…" : "Gerar roteiro"}
       </Button>
     </form>
   );

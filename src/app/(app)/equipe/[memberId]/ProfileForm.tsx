@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useFormState } from "react-dom";
 import { Button } from "@/components/ui";
 import { TextArea, FormError } from "@/components/ui/form";
 import { updateProfile } from "@/server/actions/profile";
@@ -24,7 +24,7 @@ export function ProfileForm({
   teamMemberId: string;
   values: ProfileValues;
 }) {
-  const [state, action, pending] = useActionState(updateProfile, initial);
+  const [state, action, pending] = useFormState(updateProfile, initial);
   return (
     <form action={action} className="flex flex-col gap-3">
       <input type="hidden" name="teamMemberId" value={teamMemberId} />

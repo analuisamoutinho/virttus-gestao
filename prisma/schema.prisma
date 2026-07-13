@@ -356,6 +356,14 @@ model PDIAction {
 }
 
 // ─────────────────────────── CONVERSA (Pro) ───────────────────────────
+enum ConversationContextType {
+  FEEDBACK_CONSTRUTIVO
+  RECONHECIMENTO
+  CONFLITO
+  DESENVOLVIMENTO
+  BAIXA_PERFORMANCE
+}
+
 model ConversationScript {
   id             String       @id @default(cuid())
   organizationId String
@@ -363,11 +371,13 @@ model ConversationScript {
   teamMemberId   String
   teamMember     TeamMember   @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
 
-  context   String  @db.Text
-  opening   String? @db.Text
-  questions Json? // perguntas socráticas
-  closing   String? @db.Text
-  engine    String  @default("rules") // "rules" agora, "llm" depois
+  type        ConversationContextType
+  situation   String                  @db.Text
+  focusVirtue Virtue?
+  opening     String?                 @db.Text
+  questions   Json? // perguntas socráticas
+  closing     String?                 @db.Text
+  engine      String                  @default("rules") // "rules" agora, "llm" depois
 
   createdAt DateTime @default(now())
 

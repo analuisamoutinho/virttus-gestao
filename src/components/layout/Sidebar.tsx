@@ -13,6 +13,7 @@ const NAV = [
   { href: "/metas", label: "Metas OKR", icon: "◉" },
   { href: "/pdi", label: "PDI", icon: "◆" },
   { href: "/conversa", label: "Conversa", icon: "◌" },
+  { href: "/rh", label: "Painel de RH", icon: "◫" },
 ];
 
 export function Sidebar() {

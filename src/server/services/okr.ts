@@ -24,3 +24,15 @@ export function currentQuarter(now = new Date()): string {
   const q = Math.floor(now.getMonth() / 3) + 1;
   return `${now.getFullYear()}-Q${q}`;
 }
+
+// Intervalo [start, end) de um trimestre "2026-Q3" para filtros de data.
+export function quarterRange(quarter: string): { start: Date; end: Date } {
+  const [yearStr, qStr] = quarter.split("-Q");
+  const year = Number(yearStr);
+  const q = Number(qStr);
+  const startMonth = (q - 1) * 3;
+  return {
+    start: new Date(Date.UTC(year, startMonth, 1)),
+    end: new Date(Date.UTC(year, startMonth + 3, 1)),
+  };
+}

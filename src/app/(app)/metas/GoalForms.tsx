@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
+import { useFormState } from "react-dom";
 import { Button } from "@/components/ui";
 import { TextField, TextArea, SelectField, FormError } from "@/components/ui/form";
 import { createGoal, updateKeyResult } from "@/server/actions/goal";
@@ -18,7 +19,7 @@ export function NewGoalForm({
   quarter: string;
   defaultMemberId?: string;
 }) {
-  const [state, action, pending] = useActionState(createGoal, initial);
+  const [state, action, pending] = useFormState(createGoal, initial);
   const [krCount, setKrCount] = useState(2);
 
   return (
@@ -89,7 +90,7 @@ export function UpdateKrForm({
   keyResultId: string;
   current: number;
 }) {
-  const [state, action, pending] = useActionState(updateKeyResult, initial);
+  const [state, action, pending] = useFormState(updateKeyResult, initial);
   return (
     <form action={action} className="flex items-center gap-1">
       <input type="hidden" name="keyResultId" value={keyResultId} />

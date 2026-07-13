@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useFormState } from "react-dom";
 import { Button, Card } from "@/components/ui";
 import {
   createOrganization,
@@ -11,7 +11,7 @@ import {
 const initial: ActionResult | null = null;
 
 export function CreateOrgForm() {
-  const [state, action, pending] = useActionState(createOrganization, initial);
+  const [state, action, pending] = useFormState(createOrganization, initial);
   return (
     <Card className="w-full max-w-md">
       <h2 className="font-sora text-xl font-bold text-deep">Crie sua organização</h2>
@@ -30,7 +30,7 @@ export function CreateOrgForm() {
 }
 
 export function AddMemberForm({ atLimit }: { atLimit: boolean }) {
-  const [state, action, pending] = useActionState(addTeamMember, initial);
+  const [state, action, pending] = useFormState(addTeamMember, initial);
   return (
     <form action={action} className="flex flex-col gap-3">
       <div className="grid gap-3 sm:grid-cols-2">

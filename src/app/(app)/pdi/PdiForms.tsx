@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
+import { useFormState } from "react-dom";
 import { Button } from "@/components/ui";
 import { TextField, SelectField, FormError } from "@/components/ui/form";
 import { VirtueOptions } from "@/components/VirtueBadge";
@@ -19,7 +20,7 @@ export function NewPdiForm({
   quarter: string;
   defaultMemberId?: string;
 }) {
-  const [state, action, pending] = useActionState(createPdi, initial);
+  const [state, action, pending] = useFormState(createPdi, initial);
   return (
     <form action={action} className="flex flex-col gap-3">
       {defaultMemberId ? (
@@ -58,7 +59,7 @@ export function NewPdiForm({
 }
 
 export function AddPdiActionForm({ pdiId }: { pdiId: string }) {
-  const [state, action, pending] = useActionState(addPdiAction, initial);
+  const [state, action, pending] = useFormState(addPdiAction, initial);
   return (
     <form action={action} className="mt-2 flex items-end gap-2">
       <input type="hidden" name="pdiId" value={pdiId} />

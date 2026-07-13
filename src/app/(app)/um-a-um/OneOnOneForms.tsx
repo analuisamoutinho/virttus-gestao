@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useFormState } from "react-dom";
 import { Button } from "@/components/ui";
 import { TextField, TextArea, SelectField, FormError } from "@/components/ui/form";
 import { VirtueOptions } from "@/components/VirtueBadge";
@@ -22,7 +22,7 @@ export function NewOneOnOneForm({
   members: MemberOpt[];
   defaultMemberId?: string;
 }) {
-  const [state, action, pending] = useActionState(createOneOnOne, initial);
+  const [state, action, pending] = useFormState(createOneOnOne, initial);
   return (
     <form action={action} className="flex flex-col gap-3">
       {defaultMemberId ? (
@@ -53,7 +53,7 @@ export function NewOneOnOneForm({
 }
 
 export function CompleteOneOnOneForm({ oneOnOneId }: { oneOnOneId: string }) {
-  const [state, action, pending] = useActionState(completeOneOnOne, initial);
+  const [state, action, pending] = useFormState(completeOneOnOne, initial);
   return (
     <form action={action} className="mt-3 flex flex-col gap-3 border-t border-border pt-3">
       <input type="hidden" name="oneOnOneId" value={oneOnOneId} />
@@ -80,7 +80,7 @@ export function CompleteOneOnOneForm({ oneOnOneId }: { oneOnOneId: string }) {
 }
 
 export function AddActionItemForm({ oneOnOneId }: { oneOnOneId: string }) {
-  const [state, action, pending] = useActionState(addActionItem, initial);
+  const [state, action, pending] = useFormState(addActionItem, initial);
   return (
     <form action={action} className="mt-2 flex items-end gap-2">
       <input type="hidden" name="oneOnOneId" value={oneOnOneId} />

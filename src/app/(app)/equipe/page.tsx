@@ -3,6 +3,7 @@ import { getContext } from "@/server/context";
 import { db } from "@/server/db";
 import { Card, EmptyState } from "@/components/ui";
 import { PLAN_LIMITS } from "@/server/plan/limits";
+import { hasFeature } from "@/server/plan/gate";
 import { AddMemberForm } from "@/app/(auth)/onboarding/OnboardingForms";
 
 export default async function EquipePage() {
@@ -20,10 +21,17 @@ export default async function EquipePage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-sora text-2xl font-bold text-deep">Equipe</h1>
-        <span className="text-sm text-muted">
-          {members.length}/{Number.isFinite(limit) ? limit : "∞"} liderados ·{" "}
-          {PLAN_LIMITS[org.plan].label}
-        </span>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-muted">
+            {members.length}/{Number.isFinite(limit) ? limit : "∞"} liderados ·{" "}
+            {PLAN_LIMITS[org.plan].label}
+          </span>
+          {hasFeature(org, "export") ? (
+            <a href="/api/export/team" className="text-sm font-semibold text-purple">
+              Exportar CSV
+            </a>
+          ) : null}
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
