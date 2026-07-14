@@ -12,6 +12,8 @@ const NAV = [
   { href: "/feedback", label: "Feedback", icon: "✎" },
   { href: "/metas", label: "Metas OKR", icon: "◉" },
   { href: "/pdi", label: "PDI", icon: "◆" },
+  { href: "/treinamentos", label: "Treinamentos", icon: "▦" },
+  { href: "/biblioteca", label: "Biblioteca", icon: "▤" },
   { href: "/conversa", label: "Conversa", icon: "◌" },
   { href: "/rh", label: "Painel de RH", icon: "◫" },
 ];
