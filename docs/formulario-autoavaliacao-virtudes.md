@@ -122,6 +122,43 @@
 
 ---
 
+## Parte 8
+
+**8.1 (escolha forçada)** Você tem duas opções de tarefa pra essa semana: uma que você já domina e sabe que vai sair bem, e outra maior, mais visível, mas que você nunca fez e pode dar errado. Qual você tende a escolher?
+- (a) A que eu já domino — prefiro entregar bem algo certo.
+- (b) A maior, mesmo com risco de não sair perfeita.
+
+**8.2 (frequência)** Nas últimas semanas, quantas vezes você se ofereceu para algo que não era esperado de você (não foi pedido diretamente) — assumir uma responsabilidade extra, propor algo maior do que o combinado?
+- ( ) Nenhuma vez · ( ) 1 vez · ( ) 2–3 vezes · ( ) Mais de 3 vezes
+
+**8.3 (relato primeiro)** Conte a última vez que você teve a chance de fazer algo maior ou mais ambicioso do que o mínimo esperado. O que você decidiu fazer?
+
+**8.4 (escolha forçada)** Quando você imagina pedir um aumento, uma conta maior ou mais responsabilidade, o que mais se parece com você?
+- (a) Eu peço direto quando sinto que já entreguei o suficiente pra isso.
+- (b) Eu espero que percebam e me ofereçam, sem eu precisar pedir.
+- (c) Eu evito pedir, mesmo achando que mereço, porque me sinto desconfortável com isso.
+
+---
+
+## Parte 9
+
+**9.1 (escolha forçada)** Você e um colega trabalharam juntos numa entrega que foi bem, mas foi você quem apresentou o resultado pro cliente/liderança. O que você mais provavelmente faz?
+- (a) Menciono claramente a contribuição do colega no que foi feito.
+- (b) Falo pelo time de forma genérica, sem detalhar quem fez o quê.
+- (c) Foco em explicar o resultado, sem necessariamente citar quem fez cada parte.
+
+**9.2 (frequência)** Nas últimas 2 semanas, quantas vezes você percebeu uma divisão de tarefas ou de crédito que achou injusta (com você ou com outra pessoa) e não disse nada?
+- ( ) Nenhuma vez · ( ) 1 vez · ( ) 2–3 vezes · ( ) Mais de 3 vezes
+
+**9.3 (relato primeiro)** Conte a última vez que você teve que tomar uma decisão que beneficiava uma pessoa/conta/cliente e, na prática, deixava outro em segundo plano (ex.: priorizar a entrega de um cliente sobre outro, dar mais atenção a uma conta). Como você decidiu e por quê?
+
+**9.4 (escolha forçada)** Você prometeu algo a um colega ou cliente (ex.: entregar um relatório, revisar algo) mas surgiu uma prioridade maior que compete pelo mesmo tempo. O que você mais provavelmente faz?
+- (a) Cumpro o que prometi primeiro, mesmo atrasando a prioridade nova.
+- (b) Atendo a prioridade nova e explico depois pra quem eu tinha prometido.
+- (c) Tento fazer as duas coisas parcialmente ao mesmo tempo, mesmo sabendo que talvez nenhuma saia boa.
+
+---
+
 ## Fechamento (igual para todos, sem forçar escolha)
 
 - (aberta) O que está funcionando bem pra você no seu trabalho hoje?
@@ -141,6 +178,8 @@
 | 5 | Fé | 5.1(b)/(c) revela insegurança sobre o combinado — vale investigar na 1:1 antes de cobrar mais entrega. |
 | 6 | Esperança | 6.1(b)/(c) recorrente indica desânimo específico com contas — cruzar com dados reais da conta antes de concluir. |
 | 7 | Caridade | 7.1 sem exemplo e 7.2(b)/(c) recorrente = ajuda condicionada; 7.1 com exemplo espontâneo e 7.2(a) = serviço real. |
+| 8 | Magnanimidade | 8.1(b), 8.4(a) e frequência alta em 8.2 (com relato de 8.3 mostrando que assumiu de fato) = busca o grande, não se acomoda. 8.1(a) recorrente, 8.4(b)/(c) e baixa frequência em 8.2 = tende a jogar seguro/se conter, mesmo que o discurso pareça ambicioso. |
+| 9 | Justiça | 9.1(a), 9.4(a) e relato em 9.3 com critério claro e não arbitrário = trata os outros com o que lhes é devido. 9.1(b)/(c) recorrente, alta frequência em 9.2 (percebe injustiça e cala) e 9.4(b)/(c) = pode estar sendo displicente com compromissos com outros, ou nota injustiça mas evita se posicionar — vale cruzar com a Parte 3 (Coragem) para saber se é medo ou desatenção. |
 
 **Como usar:**
 1. **Ignore a "nota" e olhe o padrão.** Este formulário não gera uma pontuação limpa de 1 a 5 — gera pistas comportamentais. O valor está em cruzar a escolha forçada + a frequência + o relato concreto da mesma parte: quando os três apontam na mesma direção, você tem um baseline confiável.
