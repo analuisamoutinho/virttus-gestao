@@ -1,7 +1,27 @@
 # Ficha de liderado — Vinicius (Vin)
 
 **Função:** Analista de Mídia / Gestor de Tráfego
-**Fontes:** 1:1 (14/05/2026) · mensal do setor (07/05/2026)
+**Fontes:** formulário "Jogo Aberto" (14/05/2026, mesmo dia da 1:1) · 1:1 (14/05/2026) · mensal do setor (07/05/2026)
+
+## Formulário "Jogo Aberto" (14/05/2026 — preparação para a 1:1 do mesmo dia)
+
+Respostas dele, na íntegra por tema:
+- **Começar:** valorizou os próprios rituais recém-implantados (1:1, alinhamento de setor, PDI estabelecido) — resposta dada no dia em que esses rituais estavam sendo formalizados.
+- **Parar:** não respondeu.
+- **O que fazemos bem:** integração entre os times e treinamentos.
+- **Orgulho dos últimos 30 dias:** virou a estratégia da conta **Jotta** — o cliente parou de reclamar de leads desqualificados e começou a fechar as primeiras vendas via tráfego.
+- **Zona de conforto / quer mais desafio:** diz estar confortável em **planejamento e definição de estratégia**, e que precisa evoluir é na **execução**.
+- **Maior gargalo do setor:** tarefas operacionais que às vezes impedem dedicar tempo a gerar mais valor para os clientes.
+- **Quer falar no 1:1:** desenvolvimento — "me ajudar a ter maior consciência do ponto em que estou e no que preciso focar minha evolução".
+- **O que a liderança poderia fazer diferente:** a proximidade e o direcionamento dos alinhamentos semanais "está ajudando bastante" (sinal positivo sobre a rotina nova).
+- **Objetivo para 2026:** já alcançou alguns objetivos que tinha para o início do ano; os próximos são aumento de renda e decidir sua próxima "formação".
+
+### Leitura pelas virtudes
+
+- **Autocontrole (positivo):** valoriza explicitamente a estrutura/rituais novos — sinal de que responde bem a ambiente com mais disciplina externa; a rotina está funcionando como andaime para a disciplina própria, ainda em construção.
+- ⚠️ **Padrão importante — planejamento como zona de conforto, execução como lacuna, nomeado por ele mesmo.** Isso é uma pista relevante: gente pode discursar estratégia com facilidade e evitar o desconforto de executar/apresentar/cobrar (public accountability). Cruza diretamente com o que já vínhamos observando (timidez, postura reativa, ausências em horas de foco). **Vantagem para a 1:1:** é autodiagnóstico dele, não imposição da gestora — use a própria frase dele ("preciso evoluir na execução") como ponto de partida da meta de liderança em ato, em vez de apresentar como crítica externa.
+- **Prudência/Justiça:** cita um resultado concreto e verificável (conta Jotta, fechamento de vendas) — bom sinal de que consegue nomear valor entregue com precisão, não só genericamente.
+- **Esperança:** já alcançou metas do início do ano e projeta novas — postura construtiva, mas os objetivos citados (renda, "formação") ainda não conectam com a ambição de liderança mencionada na 1:1 — vale integrar as duas conversas.
 
 ## Leitura atual
 
@@ -41,4 +61,4 @@ Desempenho **esperado** (contas em dia, rotina funcionando) · Potencial **médi
 
 1. **Manter:** rotina nova funcionando, relatórios na 1ª semana — reconhecer explicitamente.
 2. **Mudar:** ausências nas horas de foco — feedback SBI direto (fato do CS, impacto na comunicação com cliente); liderança começa por cumprir o combinado.
-3. **Começar:** cobrar a definição de carreira 6–12 meses (prazo para ele trazer por escrito) e fechar o PDI formal em cima disso. Lembrete: quem quer gerir pessoas treina liderança nos projetos atuais, não em curso teórico.
+3. **Começar:** cobrar a definição de carreira 6–12 meses (prazo para ele trazer por escrito) e fechar o PDI formal em cima disso. Lembrete: quem quer gerir pessoas treina liderança nos projetos atuais, não em curso teórico. Ancorar a meta de "liderança em ato" na própria frase dele ("preciso evoluir na execução") — reforça que o diagnóstico é dele, não só da gestora.
