@@ -125,3 +125,56 @@ Quadrantes-chave: **Estrela** (promover/reter com urgência), **Forte Desempenho
 1. **Auditar as RCFs:** todo liderado com missão e indicadores documentados, alinhados à jornada do cliente.
 2. **Formalizar a agenda de 1:1s:** 30 min bloqueados por liderado — os compromissos mais importantes da semana.
 3. **Revisar as regras de meritocracia:** ser capaz de explicar os critérios de crescimento ao time; lembrar que a "mochila" de habilidades é riqueza portátil do colaborador.
+
+---
+
+# Rotina do setor (POP da Agência Foco) — o que priorizar no PDI
+
+O POP revela que o analista da Foco atua além do gerenciador de anúncios — quase como Growth/CS:
+
+1. **Engenharia de prompt e domínio de IA** — etapa obrigatória do processo: projetos iniciais no GPT, insights mensais do FocoX gerados via Claude. O analista deve **conferir, pontuar e contribuir criticamente** com os textos da IA antes do envio ao cliente (nunca "copia e cola").
+2. **Copywriting e noções de web design (Great Pages)** — ajuste de bio do Instagram com copy e CTA; criação de Landing Pages (básico = layout padrão; avançado = LP totalmente personalizada com wireframes e foco em conversão); descrições do Google Meu Negócio.
+3. **Agilidade analítica ("aquecimento")** — campanhas de aquecimento imediatamente após validação dos acessos; curadoria rápida de 3–10 conteúdos orgânicos com bom engajamento.
+4. **Comunicação H2H via Zappy** — o analista se apresenta como responsável estratégico, solicita fotos trimestrais, aprova LPs, envia QR Code de avaliação; nível avançado participa da call mensal de resultados.
+5. **Disciplina científica (NAMTAB e SULTS)** — registro semanal: o que foi testado / o que funcionou / o que foi observado / próximo passo; relatório completo de 90 dias no SULTS a cada trimestre.
+
+## KPIs de execução do POP
+
+- **Prazos/SLAs:** setup e aquecimento imediatos; planejamento em 3 dias úteis; insights FocoX até o dia 5; relatório de 90 dias no SULTS em dia.
+- **Documentação/processos:** taxa de preenchimento semanal do NAMTAB (4 pontos obrigatórios); qualidade da revisão humana sobre a IA; adesão à atualização trimestral do GMN.
+- **Qualidade técnica:** frequência de verificação de campanhas por nível (básico 2×/semana, intermediário 3×/semana, avançado diária); nível de personalização da LP conforme o plano do cliente; profundidade da análise histórica (30 min no básico até auditoria de 2h no avançado).
+- **Aplicação:** auditoria mensal por amostragem (2–3 contas por analista, checklist 0–10) → alimenta as 1:1s e a 9-Box.
+
+## Cronograma de treinamentos — 90 dias (um tema central por mês)
+
+- **Mês 1 — Imersão em Engenharia de Prompts e IA aplicada:** (S1) fundamentos do prompt e setup de projetos no GPT com briefing/identidade/restrições; (S2) domínio do Claude para relatórios FocoX com dados brutos da planilha; (S3) refinamento humano e senso crítico "anti-robô" — laboratório de erros com relatório 100% IA; (S4) IA no planejamento estratégico e copywriting (pesquisa de concorrentes, wireframes, gatilhos). Entregável do mês: **Biblioteca de Prompts da Foco** validada pelo time.
+- **Mês 2 — Análise, estratégia e método científico:** método NAMTAB; auditoria e análise histórica; os 8 passos do planejamento estratégico; otimização de campanhas por nível.
+- **Mês 3 — Expansão de negócio e retenção:** Google Meu Negócio/SEO local; novos criativos e roteiros; relatório de 90 dias no SULTS; reuniões de resultados e postura avançada.
+- **Formato:** hands-on com contas reais; gravar sessões e anexar num módulo de onboarding (FocoX/Drive); sucesso medido pela qualidade do texto final, não só pela velocidade.
+
+---
+
+# Alinhamento com a metodologia Virttus (9 virtudes — Alexandre Havard)
+
+Todo conteúdo de gestão inserido no app deve ser lido pela lente das virtudes:
+**Magnanimidade e Humildade** (liderança) · **Prudência, Justiça, Coragem e Autocontrole** (cardeais) · **Fé, Esperança e Caridade** (teologais).
+
+Tradução dos frameworks acima para a linguagem das virtudes:
+
+| Conceito do material | Virtude(s) correspondente(s) |
+| --- | --- |
+| Resiliência sob pressão (bloqueios, quedas de ROAS) | **Coragem** (fortaleza para persistir) + **Esperança** (confiança no processo) |
+| Organização, gestão de verba e prazos | **Prudência** (decidir bem com dados) + **Autocontrole** (disciplina nos rituais) |
+| Comunicação clara/honesta com o cliente, inclusive más notícias | **Justiça** (verdade devida ao cliente) + **Coragem** |
+| Senso crítico sobre a IA, diário de bordo, hipóteses | **Prudência** (discernir a realidade) + **Humildade** (registrar erros e aprender) |
+| Mentoria, playbooks, elevar o time | **Caridade** (servir) + **Magnanimidade** (chamar os outros à grandeza) |
+| Protagonismo de carreira / "mochila" (WIIFM) | **Magnanimidade** (objetivos grandes) + **Esperança** |
+| Meritocracia, critérios transparentes, calibração | **Justiça** (dar a cada um o que lhe é devido) + **Humildade** do líder |
+| Confiança nos combinados, missão da RCF | **Fé** (confiança dada e recebida; sentido do trabalho) |
+
+**Ajustes metodológicos (onde o material diverge da base do app):**
+
+1. **"Potencial baixo" na 9-Box não é destino.** Na metodologia das virtudes, virtude é **hábito treinável** — potencial cresce com prática deliberada. Usar a 9-Box como fotografia, nunca como rótulo fixo; o PDI existe justamente para mover a pessoa de caixa.
+2. **Carreira em Y não isenta de caridade/serviço.** "Blindar o especialista da gestão" está correto quanto ao cargo, mas ninguém é blindado do serviço ao time: o especialista serve via documentação, auditoria e mentoria indireta — isso é caridade e magnanimidade em modo técnico.
+3. **KPIs medem entregas; virtudes medem o caráter que sustenta as entregas.** Toda meta de PDI no Virttus deve carregar as duas dimensões: a competência (o quê) e a virtude exercitada (o como/por quê).
+4. **Meritocracia sem magnanimidade vira frieza.** Resultados são o critério de promoção, mas o líder magnânimo comunica os critérios apontando para o crescimento da pessoa, não só para o filtro.
