@@ -1,10 +1,10 @@
 import { getContext } from "@/server/context";
 import { db } from "@/server/db";
-import { Card, EmptyState, PageHeader, SectionTitle, Badge, Icon } from "@/components/ui";
-import { VirtueBadge } from "@/components/VirtueBadge";
+import { Card, EmptyState, PageHeader } from "@/components/ui";
 import { formatDateTime } from "@/lib/format";
-import { NewTrainingForm, SeedTrainingsButton, TrainingStatusControls } from "./TrainingForms";
-import type { Training } from "@prisma/client";
+import { virtueLabel } from "@/lib/virtues";
+import { NewTrainingForm, SeedTrainingsButton } from "./TrainingForms";
+import { TrainingBoard, type TrainingCard } from "./TrainingBoard";
 
 export default async function TreinamentosPage() {
   const { org } = await getContext();
@@ -14,7 +14,15 @@ export default async function TreinamentosPage() {
     orderBy: { scheduledAt: "asc" },
   });
 
-  const groups = groupByModule(trainings);
+  const cards: TrainingCard[] = trainings.map((t) => ({
+    id: t.id,
+    title: t.title,
+    description: t.description,
+    module: t.module,
+    status: t.status,
+    focusVirtueLabel: t.focusVirtue ? virtueLabel(t.focusVirtue) : null,
+    dateLabel: formatDateTime(t.scheduledAt),
+  }));
 
   return (
     <div>
@@ -26,87 +34,47 @@ export default async function TreinamentosPage() {
       />
 
       {trainings.length === 0 ? (
-        <EmptyState
-          icon="◫"
-          title="Nenhum treinamento cadastrado ainda"
-          description="Carregue o cronograma padrão do setor de Mídia (jul–out) ou adicione o primeiro treinamento manualmente ao lado."
-          action={<SeedTrainingsButton />}
-        />
-      ) : (
-        <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-          <div className="flex flex-col gap-6">
-            {groups.map(([module, items]) => (
-              <div key={module}>
-                <div className="mb-2 flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-grad" />
-                  <h2 className="font-sora text-xs font-bold uppercase tracking-[0.1em] text-muted">
-                    {module}
-                  </h2>
-                  <span className="h-px flex-1 bg-border" />
-                </div>
-                <div className="flex flex-col gap-3">
-                  {items.map((t) => (
-                    <Card key={t.id} hover>
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <p className="font-sora text-sm font-semibold text-deep">{t.title}</p>
-                          <p className="flex items-center gap-1 text-xs text-muted">
-                            <Icon.calendar width={12} height={12} />
-                            {formatDateTime(t.scheduledAt)}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {t.focusVirtue ? <VirtueBadge virtue={t.focusVirtue} /> : null}
-                          <StatusPill status={t.status} />
-                        </div>
-                      </div>
-                      {t.description ? (
-                        <p className="mt-2 whitespace-pre-wrap text-sm text-muted">
-                          {t.description}
-                        </p>
-                      ) : null}
-                      <div className="mt-3">
-                        <TrainingStatusControls id={t.id} status={t.status} />
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <Card className="h-fit lg:sticky lg:top-24">
-            <SectionTitle hint="Adicione ao cronograma do setor.">
+        <div className="flex flex-col gap-6">
+          <EmptyState
+            icon="▦"
+            title="Nenhum treinamento cadastrado ainda"
+            description="Carregue o cronograma padrão do setor de Mídia (jul–out) ou adicione o primeiro treinamento manualmente abaixo."
+            action={<SeedTrainingsButton />}
+          />
+          <Card className="mx-auto w-full max-w-xl">
+            <h2 className="mb-3 font-sora text-lg font-semibold text-deep">
               Novo treinamento
-            </SectionTitle>
+            </h2>
             <NewTrainingForm />
           </Card>
         </div>
+      ) : (
+        <>
+          {/* Disclosure: novo treinamento */}
+          <details className="group mb-6">
+            <summary className="inline-flex cursor-pointer list-none items-center gap-2 rounded-sm border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-deep shadow-sm transition hover:border-border-strong">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                className="text-purple transition group-open:rotate-45"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Novo treinamento
+            </summary>
+            <Card className="mt-3 max-w-xl animate-scale-in">
+              <NewTrainingForm />
+            </Card>
+          </details>
+
+          <TrainingBoard trainings={cards} />
+        </>
       )}
     </div>
-  );
-}
-
-function groupByModule(trainings: Training[]): Array<[string, Training[]]> {
-  const map = new Map<string, Training[]>();
-  for (const t of trainings) {
-    const key = t.module ?? "Sem módulo";
-    if (!map.has(key)) map.set(key, []);
-    map.get(key)!.push(t);
-  }
-  return Array.from(map.entries());
-}
-
-function StatusPill({ status }: { status: "PLANNED" | "DONE" | "CANCELED" }) {
-  const map = {
-    PLANNED: { label: "Planejado", tone: "blue" as const },
-    DONE: { label: "Concluído", tone: "success" as const },
-    CANCELED: { label: "Cancelado", tone: "neutral" as const },
-  };
-  const s = map[status];
-  return (
-    <Badge tone={s.tone} dot>
-      {s.label}
-    </Badge>
   );
 }

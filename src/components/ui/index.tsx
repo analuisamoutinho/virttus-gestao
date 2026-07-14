@@ -1,8 +1,9 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { Icon, type IconName } from "./icons";
+import { LogoMark } from "./logo-mark";
 
-export { Icon };
+export { Icon, LogoMark };
 export type { IconName };
 
 // ─── Card ───
@@ -347,13 +348,19 @@ export function ProgressBar({
   );
 }
 
-// ─── Logo ───
-export function Logo({ className = "" }: { className?: string }) {
+// ─── Logo (símbolo + wordmark) ───
+export function Logo({
+  className = "",
+  markSize = 36,
+}: {
+  className?: string;
+  markSize?: number;
+}) {
   return (
-    <span className={`flex items-center gap-2.5 font-sora text-xl font-bold text-deep ${className}`}>
-      <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-grad text-sm text-white shadow-glow-blue">
-        V
-      </span>
+    <span
+      className={`flex items-center gap-2.5 font-sora text-xl font-bold tracking-tight text-deep ${className}`}
+    >
+      <LogoMark size={markSize} />
       <span>
         Virt<span className="text-gradient">tus</span>
       </span>
