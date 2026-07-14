@@ -6,8 +6,13 @@ import { LocalLoginForm } from "./LocalLoginForm";
 const GOOGLE_CONFIGURED = Boolean(
   process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET,
 );
+const LOCAL_LOGIN_CONFIGURED = Boolean(process.env.LOCAL_LOGIN_PASSWORD);
 
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: { error?: string };
+}) {
   const session = await auth();
   if (session?.user) redirect("/dashboard");
 
@@ -31,8 +36,12 @@ export default async function LoginPage() {
               Continuar com Google
             </Button>
           </form>
+        ) : LOCAL_LOGIN_CONFIGURED ? (
+          <LocalLoginForm error={searchParams.error} />
         ) : (
-          <LocalLoginForm />
+          <p className="text-sm text-red-600">
+            Login não configurado. Defina AUTH_GOOGLE_ID/SECRET ou LOCAL_LOGIN_PASSWORD.
+          </p>
         )}
 
         <p className="mt-6 text-xs text-muted">

@@ -9,3 +9,7 @@ out
 /test-results
 prisma/dev.db
 .claude
+.vercel
+.env*
+.agents
+skills-lock.json

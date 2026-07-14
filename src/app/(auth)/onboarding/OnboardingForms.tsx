@@ -2,11 +2,7 @@
 
 import { useFormState } from "react-dom";
 import { Button, Card } from "@/components/ui";
-import {
-  createOrganization,
-  addTeamMember,
-  type ActionResult,
-} from "@/server/actions/team";
+import { createOrganization, type ActionResult } from "@/server/actions/team";
 
 const initial: ActionResult | null = null;
 
@@ -26,23 +22,6 @@ export function CreateOrgForm() {
         </Button>
       </form>
     </Card>
-  );
-}
-
-export function AddMemberForm({ atLimit }: { atLimit: boolean }) {
-  const [state, action, pending] = useFormState(addTeamMember, initial);
-  return (
-    <form action={action} className="flex flex-col gap-3">
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Field label="Nome" name="name" placeholder="Bruno Souza" required />
-        <Field label="Cargo (opcional)" name="role" placeholder="Analista" />
-      </div>
-      <Field label="E-mail (opcional)" name="email" type="email" placeholder="bruno@acme.com" />
-      {state && !state.ok ? <ErrorText>{state.error}</ErrorText> : null}
-      <Button type="submit" variant="outline" disabled={pending || atLimit}>
-        {pending ? "Adicionando..." : "+ Adicionar liderado"}
-      </Button>
-    </form>
   );
 }
 

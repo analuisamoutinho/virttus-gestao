@@ -17,6 +17,7 @@ import { FeedbackForm } from "../../feedback/FeedbackForm";
 import { NewGoalForm } from "../../metas/GoalForms";
 import { NewPdiForm } from "../../pdi/PdiForms";
 import { ProfileForm } from "./ProfileForm";
+import { EditMemberForm } from "./EditMemberForm";
 import { MemberTabs, MEMBER_TABS, type MemberTabKey } from "./MemberTabs";
 
 export default async function MemberPage({
@@ -67,22 +68,31 @@ export default async function MemberPage({
 
       {tab === "visao" ? <VisaoTab memberId={member.id} radar={radar} /> : null}
       {tab === "perfil" ? (
-        <Card>
-          <p className="mb-4 text-sm text-muted">
-            O “manual de instruções” do liderado — use como lembrete em 1:1s e conversas.
-          </p>
-          <ProfileForm
-            teamMemberId={member.id}
-            values={{
-              motivators: member.profile?.motivators ?? null,
-              feedbackPrefs: member.profile?.feedbackPrefs ?? null,
-              communicationStyle: member.profile?.communicationStyle ?? null,
-              strengths: member.profile?.strengths ?? null,
-              watchouts: member.profile?.watchouts ?? null,
-              aspirations: member.profile?.aspirations ?? null,
-            }}
-          />
-        </Card>
+        <div className="flex flex-col gap-6">
+          <Card>
+            <h3 className="mb-3 font-sora text-base font-semibold text-deep">Dados básicos</h3>
+            <EditMemberForm
+              teamMemberId={member.id}
+              values={{ name: member.name, role: member.role, email: member.email }}
+            />
+          </Card>
+          <Card>
+            <p className="mb-4 text-sm text-muted">
+              O “manual de instruções” do liderado — use como lembrete em 1:1s e conversas.
+            </p>
+            <ProfileForm
+              teamMemberId={member.id}
+              values={{
+                motivators: member.profile?.motivators ?? null,
+                feedbackPrefs: member.profile?.feedbackPrefs ?? null,
+                communicationStyle: member.profile?.communicationStyle ?? null,
+                strengths: member.profile?.strengths ?? null,
+                watchouts: member.profile?.watchouts ?? null,
+                aspirations: member.profile?.aspirations ?? null,
+              }}
+            />
+          </Card>
+        </div>
       ) : null}
       {tab === "um-a-um" ? <OneOnOneTab memberId={member.id} /> : null}
       {tab === "feedback" ? <FeedbackTab memberId={member.id} /> : null}

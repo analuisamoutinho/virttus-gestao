@@ -4,7 +4,7 @@ import { db } from "@/server/db";
 import { Card, EmptyState } from "@/components/ui";
 import { PLAN_LIMITS } from "@/server/plan/limits";
 import { hasFeature } from "@/server/plan/gate";
-import { AddMemberForm } from "@/app/(auth)/onboarding/OnboardingForms";
+import { AddMemberForm } from "./AddMemberForm";
 
 export default async function EquipePage() {
   const { org } = await getContext();
@@ -44,6 +44,9 @@ export default async function EquipePage() {
             />
           ) : (
             <div className="flex flex-col gap-2">
+              <p className="mb-1 text-xs text-muted">
+                Clique numa pessoa para editar dados ou remover.
+              </p>
               {members.map((m) => (
                 <Link key={m.id} href={`/equipe/${m.id}`} className="block">
                   <Card className="flex items-center justify-between py-3.5 transition hover:border-blue hover:shadow-md">
