@@ -24,6 +24,14 @@ npm run dev
 - `npm run test:e2e` — Playwright (fluxos críticos)
 - `npm run db:studio` — Prisma Studio
 
+## Deploy
+- Vercel, com deploy automático a cada push no `main` (integração Git).
+- `npm run build` roda `prisma generate && prisma db push --skip-generate && next build`:
+  todo deploy aplica sozinho mudanças aditivas do schema (novas tabelas/campos) no banco
+  de produção. Mudanças que causariam perda de dados **derrubam o build** (sem
+  `--accept-data-loss`) em vez de aplicar silenciosamente — nesse caso, rode
+  `npx prisma migrate dev` localmente para gerar uma migração revisável antes de fazer merge.
+
 ## Arquitetura (Fase 1)
 - **Multi-tenant:** toda tabela de negócio carrega `organizationId`; `getContext()` (`src/server/context.ts`) resolve sessão + org por request e é o guard central do grupo `(app)`.
 - **Gating de plano central:** `src/server/plan/gate.ts` + `limits.ts`. As telas nunca replicam limites — apenas reagem ao `PlanLimitError`.
