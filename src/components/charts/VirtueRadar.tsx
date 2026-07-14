@@ -13,7 +13,8 @@ export function VirtueRadar({
 }) {
   const cx = size / 2;
   const cy = size / 2;
-  const r = size / 2 - 34; // margem p/ labels
+  const r = size / 2 - 40; // margem p/ labels
+  const padX = 48; // respiro horizontal p/ labels laterais não cortarem
   const n = VIRTUES.length;
 
   // ângulo: começa no topo (-90°) e gira sentido horário
@@ -38,8 +39,8 @@ export function VirtueRadar({
 
   return (
     <svg
-      viewBox={`0 0 ${size} ${size}`}
-      className="mx-auto h-auto w-full max-w-[300px]"
+      viewBox={`${-padX} 0 ${size + padX * 2} ${size}`}
+      className="mx-auto h-auto w-full max-w-[340px]"
       role="img"
       aria-label="Radar das 9 virtudes do time"
     >

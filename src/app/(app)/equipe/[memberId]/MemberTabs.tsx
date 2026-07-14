@@ -19,17 +19,17 @@ export function MemberTabs({
   active: MemberTabKey;
 }) {
   return (
-    <nav className="mb-6 flex flex-wrap gap-1 border-b border-border">
+    <nav className="mb-6 flex flex-wrap gap-1 overflow-x-auto border-b border-border">
       {MEMBER_TABS.map((t) => {
         const isActive = t.key === active;
         return (
           <Link
             key={t.key}
             href={`/equipe/${memberId}?tab=${t.key}`}
-            className={`-mb-px border-b-2 px-3 py-2 text-sm transition ${
+            className={`-mb-px whitespace-nowrap border-b-2 px-3.5 py-2.5 text-sm transition ${
               isActive
                 ? "border-purple font-semibold text-deep"
-                : "border-transparent text-muted hover:text-deep"
+                : "border-transparent font-medium text-muted hover:border-border-strong hover:text-deep"
             }`}
           >
             {t.label}

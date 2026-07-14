@@ -6,9 +6,9 @@
   --deep: #0b1b3a;
   --blue: #2563eb;
   --purple: #7c3aed;
-  --bg: #f8fafc;
+  --bg: #f6f8fc;
   --muted: #64748b;
-  --border: #e2e8f0;
+  --border: #e7ecf3;
   --white: #ffffff;
   --grad: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
   --grad-soft: linear-gradient(
@@ -20,11 +20,16 @@
   --r-sm: 12px;
 }
 
+* {
+  border-color: var(--border);
+}
+
 body {
   background: var(--bg);
   color: var(--deep);
   font-family: var(--font-inter), sans-serif;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 h1,
@@ -33,6 +38,7 @@ h3,
 h4,
 .font-heading {
   font-family: var(--font-sora), sans-serif;
+  letter-spacing: -0.01em;
 }
 
 .text-gradient {
@@ -40,4 +46,70 @@ h4,
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* ─── Selection ─── */
+::selection {
+  background: rgba(124, 58, 237, 0.18);
+  color: var(--deep);
+}
+
+/* ─── Focus ring acessível e consistente ─── */
+:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 4px rgba(37, 99, 235, 0.55);
+  border-radius: 8px;
+}
+
+/* ─── Scrollbar sutil ─── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+  background-clip: content-box;
+}
+
+/* ─── Utilitários ─── */
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+  }
+  .ring-focus {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue/50 focus:border-blue;
+  }
+  /* Skeleton shimmer */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: #eef2f7;
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.6),
+      transparent
+    );
+    animation: shimmer 1.4s infinite;
+  }
 }

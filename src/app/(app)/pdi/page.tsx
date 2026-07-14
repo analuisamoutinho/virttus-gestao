@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { getContext } from "@/server/context";
 import { db } from "@/server/db";
 import { listMembers } from "@/server/members";
-import { Card, EmptyState } from "@/components/ui";
+import { Card, EmptyState, PageHeader, SectionTitle, ButtonLink } from "@/components/ui";
 import { PdiCard } from "@/components/PdiCard";
 import { currentQuarter } from "@/server/services/okr";
 import { NewPdiForm } from "./PdiForms";
@@ -24,18 +23,19 @@ export default async function PdiPage() {
 
   return (
     <div>
-      <h1 className="mb-6 font-sora text-2xl font-bold text-deep">PDI</h1>
+      <PageHeader
+        icon="pdi"
+        eyebrow="Plano de Desenvolvimento Individual"
+        title="PDI"
+        subtitle="Uma competência foco por trimestre, com ações e evidências."
+      />
 
       {members.length === 0 ? (
         <EmptyState
           icon="◆"
           title="Cadastre a equipe primeiro"
           description="Você precisa de pelo menos um liderado para montar um Plano de Desenvolvimento Individual."
-          action={
-            <Link href="/equipe" className="text-sm font-semibold text-purple">
-              Ir para Equipe →
-            </Link>
-          }
+          action={<ButtonLink href="/equipe" icon="team">Ir para Equipe</ButtonLink>}
         />
       ) : (
         <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
@@ -53,9 +53,8 @@ export default async function PdiPage() {
             )}
           </div>
 
-          <Card className="h-fit">
-            <h2 className="mb-1 font-sora text-lg font-semibold text-deep">Novo PDI</h2>
-            <p className="mb-3 text-xs text-muted">1 competência foco por trimestre.</p>
+          <Card className="h-fit lg:sticky lg:top-24">
+            <SectionTitle hint="1 competência foco por trimestre.">Novo PDI</SectionTitle>
             <NewPdiForm members={members} quarter={currentQuarter()} />
           </Card>
         </div>

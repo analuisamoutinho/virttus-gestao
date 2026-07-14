@@ -52,7 +52,7 @@ export function EditMemberForm({
       >
         <input type="hidden" name="teamMemberId" value={teamMemberId} />
         {removeState && !removeState.ok ? <FormError>{removeState.error}</FormError> : null}
-        <Button type="submit" variant="ghost" disabled={removePending} className="text-red-600">
+        <Button type="submit" variant="ghost" disabled={removePending} className="text-danger hover:bg-danger-soft">
           {removePending ? "Removendo…" : "Remover liderado"}
         </Button>
       </form>

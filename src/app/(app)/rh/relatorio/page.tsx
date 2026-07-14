@@ -1,9 +1,8 @@
-import Link from "next/link";
 import { getContext } from "@/server/context";
 import { db } from "@/server/db";
 import { hasFeature } from "@/server/plan/gate";
 import { PLAN_LIMITS } from "@/server/plan/limits";
-import { Card, Kpi, EmptyState } from "@/components/ui";
+import { Card, Kpi, EmptyState, PageHeader, SectionTitle, ButtonLink } from "@/components/ui";
 import { currentQuarter, quarterRange, goalProgress } from "@/server/services/okr";
 import { teamRadar, virtueIndex } from "@/server/services/virtue-score";
 import { isStale } from "@/server/services/alerts";
@@ -14,7 +13,11 @@ export default async function RelatorioPage() {
   if (!hasFeature(org, "quarterly_report")) {
     return (
       <div>
-        <h1 className="mb-6 font-sora text-2xl font-bold text-deep">Relatório trimestral</h1>
+        <PageHeader
+          icon="hr"
+          eyebrow="Consolidado do trimestre"
+          title="Relatório trimestral"
+        />
         <EmptyState
           icon="◫"
           title="Recurso do plano Time"
@@ -80,46 +83,49 @@ export default async function RelatorioPage() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="font-sora text-2xl font-bold text-deep">Relatório trimestral</h1>
-          <p className="text-sm text-muted">{quarter} · {members.length} liderados ativos</p>
-        </div>
-        <Link href="/rh" className="text-sm font-semibold text-purple">
-          ← Painel de RH
-        </Link>
-      </div>
+      <PageHeader
+        icon="hr"
+        eyebrow="Consolidado do trimestre"
+        title="Relatório trimestral"
+        subtitle={`${quarter} · ${members.length} liderados ativos`}
+        actions={
+          <ButtonLink href="/rh" variant="outline" size="sm" icon="chevronLeft">
+            Painel de RH
+          </ButtonLink>
+        }
+      />
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Kpi label="Índice de virtude" value={index.toFixed(1)} caption="Média atual (0–10)" accent="blue" />
+        <Kpi label="Índice de virtude" value={index.toFixed(1)} caption="Média atual (0–10)" accent="blue" icon="goals" />
         <Kpi
           label="1:1s no prazo"
           value={`${onTime}/${members.length}`}
           caption="Últimos 21 dias"
           accent="purple"
+          icon="oneOnOne"
         />
-        <Kpi label="PDI concluído" value={`${pdiDoneRate}%`} caption="Ações marcadas como feitas" accent="deep" />
+        <Kpi label="PDI concluído" value={`${pdiDoneRate}%`} caption="Ações marcadas como feitas" accent="deep" icon="pdi" />
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <Card>
-          <h2 className="font-sora text-lg font-semibold text-deep">Metas & OKR</h2>
-          <p className="mt-2 text-sm text-muted">{goals.length} objetivos no trimestre.</p>
-          <p className="mt-1 font-sora text-3xl font-bold text-blue">{avgGoalProgress}%</p>
-          <p className="text-xs text-muted">Progresso médio dos objetivos.</p>
+          <SectionTitle hint="Progresso médio dos objetivos.">Metas & OKR</SectionTitle>
+          <p className="font-sora text-4xl font-bold text-blue">{avgGoalProgress}%</p>
+          <p className="mt-1 text-sm text-muted">{goals.length} objetivos no trimestre.</p>
         </Card>
 
         <Card>
-          <h2 className="font-sora text-lg font-semibold text-deep">Feedback</h2>
-          <p className="mt-2 text-sm text-muted">{feedbacks.length} feedbacks registrados no trimestre.</p>
-          <div className="mt-2 flex gap-6">
-            <div>
-              <p className="font-sora text-2xl font-bold text-green-600">{recognitionCount}</p>
-              <p className="text-xs text-muted">Reconhecimento</p>
+          <SectionTitle hint={`${feedbacks.length} feedbacks no trimestre.`}>
+            Feedback
+          </SectionTitle>
+          <div className="mt-1 grid grid-cols-2 gap-4">
+            <div className="rounded-sm bg-success-soft/50 p-4">
+              <p className="font-sora text-3xl font-bold text-success">{recognitionCount}</p>
+              <p className="text-xs font-medium text-muted">Reconhecimento</p>
             </div>
-            <div>
-              <p className="font-sora text-2xl font-bold text-purple">{constructiveCount}</p>
-              <p className="text-xs text-muted">Construtivo</p>
+            <div className="rounded-sm bg-grad-soft p-4">
+              <p className="font-sora text-3xl font-bold text-purple">{constructiveCount}</p>
+              <p className="text-xs font-medium text-muted">Construtivo</p>
             </div>
           </div>
         </Card>

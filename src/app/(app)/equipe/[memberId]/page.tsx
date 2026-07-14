@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getContext } from "@/server/context";
 import { db } from "@/server/db";
-import { Card, EmptyState } from "@/components/ui";
+import { Card, EmptyState, Avatar, Badge, Icon } from "@/components/ui";
 import { VirtueRadar } from "@/components/charts/VirtueRadar";
 import { VirtueBadge } from "@/components/VirtueBadge";
 import { FeedbackCard } from "@/components/FeedbackCard";
@@ -49,19 +49,25 @@ export default async function MemberPage({
 
   return (
     <div>
-      <div className="mb-4 flex items-center gap-2 text-sm text-muted">
-        <Link href="/equipe" className="hover:text-blue">
+      <div className="mb-5 flex items-center gap-1.5 text-sm text-muted">
+        <Link href="/equipe" className="font-medium hover:text-blue">
           Equipe
         </Link>
-        <span>/</span>
-        <span className="text-deep">{member.name}</span>
+        <Icon.chevronRight width={14} height={14} />
+        <span className="font-medium text-deep">{member.name}</span>
       </div>
 
-      <div className="mb-6">
-        <h1 className="font-sora text-2xl font-bold text-deep">{member.name}</h1>
-        <p className="text-sm text-muted">
-          {member.role ?? "—"} · líder: {member.leader.name ?? "—"}
-        </p>
+      <div className="mb-6 flex items-center gap-4">
+        <Avatar name={member.name} size="lg" />
+        <div>
+          <h1 className="font-sora text-2xl font-bold text-deep">{member.name}</h1>
+          <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted">
+            <span>{member.role ?? "Sem cargo"}</span>
+            {member.leader.name ? (
+              <Badge tone="neutral">Líder: {member.leader.name}</Badge>
+            ) : null}
+          </div>
+        </div>
       </div>
 
       <MemberTabs memberId={member.id} active={tab} />
@@ -128,9 +134,9 @@ async function VisaoTab({
         <div className="mb-2 flex items-center justify-between">
           <h3 className="font-sora text-base font-semibold text-deep">Últimos 1:1s</h3>
           {stale ? (
-            <span className="rounded-full bg-grad-soft px-2 py-0.5 text-xs font-medium text-purple">
+            <Badge tone="warn" dot>
               {lastDone ? `Sem 1:1 há ${daysSince(lastDone.scheduledAt)} dias` : "Nunca teve 1:1"}
-            </span>
+            </Badge>
           ) : null}
         </div>
         {oneOnOnes.length === 0 ? (

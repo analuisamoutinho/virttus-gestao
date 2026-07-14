@@ -1,8 +1,16 @@
-import Link from "next/link";
 import { getContext } from "@/server/context";
 import { db } from "@/server/db";
 import { listMembers } from "@/server/members";
-import { Card, EmptyState } from "@/components/ui";
+import {
+  Card,
+  EmptyState,
+  PageHeader,
+  SectionTitle,
+  Avatar,
+  Badge,
+  ButtonLink,
+  Icon,
+} from "@/components/ui";
 import { VirtueBadge } from "@/components/VirtueBadge";
 import { formatDateTime } from "@/lib/format";
 import {
@@ -30,18 +38,19 @@ export default async function OneOnOnePage() {
 
   return (
     <div>
-      <h1 className="mb-6 font-sora text-2xl font-bold text-deep">1:1s</h1>
+      <PageHeader
+        icon="oneOnOne"
+        eyebrow="Conversas 1:1"
+        title="1:1s"
+        subtitle="Pauta, notas, mood e ações de acompanhamento — tudo registrado."
+      />
 
       {members.length === 0 ? (
         <EmptyState
           icon="◍"
           title="Cadastre a equipe primeiro"
           description="Você precisa de pelo menos um liderado para agendar 1:1s."
-          action={
-            <Link href="/equipe" className="text-sm font-semibold text-purple">
-              Ir para Equipe →
-            </Link>
-          }
+          action={<ButtonLink href="/equipe" icon="team">Ir para Equipe</ButtonLink>}
         />
       ) : (
         <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
@@ -54,16 +63,22 @@ export default async function OneOnOnePage() {
               />
             ) : (
               oneOnOnes.map((o) => (
-                <Card key={o.id}>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <Link
-                        href={`/equipe/${o.teamMember.id}`}
-                        className="font-sora text-sm font-semibold text-deep hover:text-blue"
-                      >
-                        {o.teamMember.name}
-                      </Link>
-                      <p className="text-xs text-muted">{formatDateTime(o.scheduledAt)}</p>
+                <Card key={o.id} hover>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <Avatar name={o.teamMember.name} size="sm" />
+                      <div>
+                        <a
+                          href={`/equipe/${o.teamMember.id}`}
+                          className="font-sora text-sm font-semibold text-deep hover:text-blue"
+                        >
+                          {o.teamMember.name}
+                        </a>
+                        <p className="flex items-center gap-1 text-xs text-muted">
+                          <Icon.clock width={12} height={12} />
+                          {formatDateTime(o.scheduledAt)}
+                        </p>
+                      </div>
                     </div>
                     <div className="flex items-center gap-2">
                       {o.focusVirtue ? <VirtueBadge virtue={o.focusVirtue} /> : null}
@@ -72,17 +87,17 @@ export default async function OneOnOnePage() {
                   </div>
 
                   {o.agenda ? (
-                    <p className="mt-2 whitespace-pre-wrap text-sm text-deep">{o.agenda}</p>
+                    <p className="mt-3 whitespace-pre-wrap text-sm text-deep">{o.agenda}</p>
                   ) : null}
                   {o.notes ? (
-                    <p className="mt-2 whitespace-pre-wrap rounded-sm bg-bg p-2 text-sm text-muted">
+                    <p className="mt-2 whitespace-pre-wrap rounded-sm border border-border bg-bg p-3 text-sm text-muted">
                       {o.notes}
                     </p>
                   ) : null}
 
                   {/* Ações de follow-up */}
                   {o.actionItems.length > 0 ? (
-                    <ul className="mt-3">
+                    <ul className="mt-3 flex flex-col gap-1">
                       {o.actionItems.map((a) => (
                         <ActionItemToggle
                           key={a.id}
@@ -102,8 +117,8 @@ export default async function OneOnOnePage() {
             )}
           </div>
 
-          <Card className="h-fit">
-            <h2 className="mb-3 font-sora text-lg font-semibold text-deep">Agendar 1:1</h2>
+          <Card className="h-fit lg:sticky lg:top-24">
+            <SectionTitle hint="Registre pauta e virtude foco.">Agendar 1:1</SectionTitle>
             <NewOneOnOneForm members={members} />
           </Card>
         </div>
@@ -114,14 +129,14 @@ export default async function OneOnOnePage() {
 
 function StatusPill({ status }: { status: "SCHEDULED" | "DONE" | "CANCELED" }) {
   const map = {
-    SCHEDULED: { label: "Agendado", cls: "bg-grad-soft text-blue" },
-    DONE: { label: "Realizado", cls: "bg-green-50 text-green-700" },
-    CANCELED: { label: "Cancelado", cls: "bg-bg text-muted" },
-  } as const;
+    SCHEDULED: { label: "Agendado", tone: "blue" as const },
+    DONE: { label: "Realizado", tone: "success" as const },
+    CANCELED: { label: "Cancelado", tone: "neutral" as const },
+  };
   const s = map[status];
   return (
-    <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${s.cls}`}>
+    <Badge tone={s.tone} dot>
       {s.label}
-    </span>
+    </Badge>
   );
 }

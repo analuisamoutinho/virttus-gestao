@@ -97,7 +97,7 @@ export function NoteCard({
             onClick={() => {
               if (confirm("Excluir esta nota?")) start(() => deleteNote(id));
             }}
-            className="font-medium text-red-600 hover:underline"
+            className="font-medium text-danger hover:underline"
           >
             excluir
           </button>

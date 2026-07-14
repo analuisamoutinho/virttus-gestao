@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { getContext } from "@/server/context";
 import { db } from "@/server/db";
 import { listMembers } from "@/server/members";
-import { Card, EmptyState } from "@/components/ui";
+import { Card, EmptyState, PageHeader, SectionTitle, ButtonLink } from "@/components/ui";
 import { FeedbackCard } from "@/components/FeedbackCard";
 import { FeedbackForm } from "./FeedbackForm";
 
@@ -21,18 +20,19 @@ export default async function FeedbackPage() {
 
   return (
     <div>
-      <h1 className="mb-6 font-sora text-2xl font-bold text-deep">Feedback</h1>
+      <PageHeader
+        icon="feedback"
+        eyebrow="Reconhecimento & desenvolvimento"
+        title="Feedback"
+        subtitle="Registre no modelo SBI: Situação, Comportamento e Impacto."
+      />
 
       {members.length === 0 ? (
         <EmptyState
           icon="✎"
           title="Cadastre a equipe primeiro"
           description="Você precisa de pelo menos um liderado para registrar feedbacks."
-          action={
-            <Link href="/equipe" className="text-sm font-semibold text-purple">
-              Ir para Equipe →
-            </Link>
-          }
+          action={<ButtonLink href="/equipe" icon="team">Ir para Equipe</ButtonLink>}
         />
       ) : (
         <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
@@ -53,13 +53,10 @@ export default async function FeedbackPage() {
             )}
           </div>
 
-          <Card className="h-fit">
-            <h2 className="mb-1 font-sora text-lg font-semibold text-deep">
+          <Card className="h-fit lg:sticky lg:top-24">
+            <SectionTitle hint="Situação · Comportamento · Impacto">
               Novo feedback (SBI)
-            </h2>
-            <p className="mb-3 text-xs text-muted">
-              Situação · Comportamento · Impacto
-            </p>
+            </SectionTitle>
             <FeedbackForm members={members} />
           </Card>
         </div>

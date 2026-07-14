@@ -49,19 +49,31 @@ export function SeedTrainingsButton() {
 export function TrainingStatusControls({
   id,
   status,
+  tone = "light",
 }: {
   id: string;
   status: "PLANNED" | "DONE" | "CANCELED";
+  tone?: "light" | "dark";
 }) {
   const [pending, start] = useTransition();
+  const primary =
+    tone === "dark"
+      ? "text-white hover:text-white/80"
+      : "text-purple hover:underline";
+  const muted =
+    tone === "dark"
+      ? "text-white/60 hover:text-white"
+      : "text-muted hover:underline";
+  const danger =
+    tone === "dark" ? "text-red-200 hover:text-white" : "text-danger hover:underline";
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-3">
       {status !== "DONE" ? (
         <button
           type="button"
           disabled={pending}
           onClick={() => start(() => updateTrainingStatus(id, "DONE"))}
-          className="text-xs font-medium text-purple hover:underline"
+          className={`text-xs font-semibold transition ${primary}`}
         >
           Marcar concluído
         </button>
@@ -70,7 +82,7 @@ export function TrainingStatusControls({
           type="button"
           disabled={pending}
           onClick={() => start(() => updateTrainingStatus(id, "PLANNED"))}
-          className="text-xs font-medium text-muted hover:underline"
+          className={`text-xs font-medium transition ${muted}`}
         >
           Reabrir
         </button>
@@ -80,7 +92,7 @@ export function TrainingStatusControls({
           type="button"
           disabled={pending}
           onClick={() => start(() => updateTrainingStatus(id, "CANCELED"))}
-          className="text-xs font-medium text-muted hover:underline"
+          className={`text-xs font-medium transition ${muted}`}
         >
           Cancelar
         </button>
@@ -91,7 +103,7 @@ export function TrainingStatusControls({
         onClick={() => {
           if (confirm("Remover este treinamento?")) start(() => deleteTraining(id));
         }}
-        className="text-xs font-medium text-red-600 hover:underline"
+        className={`ml-auto text-xs font-medium transition ${danger}`}
       >
         Excluir
       </button>

@@ -41,5 +41,9 @@ function Field({
 }
 
 function ErrorText({ children }: { children: React.ReactNode }) {
-  return <p className="text-sm text-red-600">{children}</p>;
+  return (
+    <p className="rounded-sm bg-danger-soft px-3 py-2 text-sm font-medium text-danger">
+      {children}
+    </p>
+  );
 }

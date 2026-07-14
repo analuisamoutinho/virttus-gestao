@@ -1,5 +1,5 @@
 import type { Virtue, FeedbackType } from "@prisma/client";
-import { Card } from "@/components/ui";
+import { Card, Badge } from "@/components/ui";
 import { VirtueBadge } from "@/components/VirtueBadge";
 import { formatDate } from "@/lib/format";
 
@@ -19,23 +19,20 @@ export function FeedbackCard({ fb }: { fb: FeedbackView }) {
   return (
     <Card
       className="border-l-4"
-      style={{ borderLeftColor: recognition ? "#16a34a" : "#7C3AED" }}
+      hover
+      style={{ borderLeftColor: recognition ? "#16A34A" : "#7C3AED" }}
     >
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-2">
-          <span
-            className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-              recognition ? "bg-green-50 text-green-700" : "bg-grad-soft text-purple"
-            }`}
-          >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge tone={recognition ? "success" : "purple"} dot>
             {recognition ? "Reconhecimento" : "Construtivo"}
-          </span>
+          </Badge>
           {fb.memberName ? (
             <span className="text-sm font-semibold text-deep">{fb.memberName}</span>
           ) : null}
           {fb.virtue ? <VirtueBadge virtue={fb.virtue} /> : null}
         </div>
-        <span className="text-xs text-muted">{formatDate(fb.createdAt)}</span>
+        <span className="shrink-0 text-xs text-muted">{formatDate(fb.createdAt)}</span>
       </div>
       <dl className="mt-3 flex flex-col gap-2 text-sm">
         <SbiRow label="Situação" value={fb.situation} />

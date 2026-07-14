@@ -104,7 +104,7 @@ export function UpdateKrForm({
       <Button type="submit" variant="outline" className="px-2 py-1 text-xs" disabled={pending}>
         {pending ? "…" : "ok"}
       </Button>
-      {state && !state.ok ? <span className="text-xs text-red-600">!</span> : null}
+      {state && !state.ok ? <span className="text-xs text-danger">!</span> : null}
     </form>
   );
 }
