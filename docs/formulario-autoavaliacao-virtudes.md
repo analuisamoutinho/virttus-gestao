@@ -1,93 +1,150 @@
-# Formulário de autoavaliação — Preparação para 1:1 (baseline de virtudes)
+# Formulário de preparação para 1:1 (baseline de virtudes)
 
-> Objetivo: antes de cada ciclo de 1:1/PDI, o liderado se autoavalia nas 9 virtudes com
-> **cenários do dia a dia de tráfego**, não perguntas abstratas. Isso dá um ponto de partida
-> declarado pelo próprio liderado, que você cruza com sua leitura (1:1s, auditorias, POP) para
-> definir o baseline real de cada virtude no PDI — onde a leitura dele e a sua divergem é
-> justamente o ponto mais rico da conversa.
+> Objetivo: antes de cada ciclo de 1:1/PDI, colher um retrato sincero de onde o liderado está
+> hoje, para definir o ponto de partida do desenvolvimento. **O risco de qualquer formulário
+> assim é o viés de desejabilidade social:** se a pergunta deixa óbvio qual é a resposta "certa"
+> (ex.: "eu analiso os dados antes de agir por impulso?"), quase todo mundo marca a opção boa,
+> mesmo sem perceber que está inflando a própria resposta — não é má-fé, é natural.
 >
-> **Como aplicar:** enviar por Google Forms (ou similar) 2–3 dias antes da 1:1/PDI, resposta
-> individual e sincera — não é avaliação de desempenho, é autoconhecimento. Nunca compartilhar
-> as respostas de um liderado com outro.
+> Por isso este formulário **não nomeia as virtudes** para quem responde, **não afirma o
+> comportamento desejável na pergunta**, e prioriza três formatos mais difíceis de "acertar":
+> 1. **Escolha forçada** entre duas reações plausíveis — nenhuma é sinalizada como a certa.
+> 2. **Frequência de algo específico e recente** ("nas últimas 2 semanas, quantas vezes...") em vez de traço de caráter geral ("eu sempre...").
+> 3. **Relato de um episódio concreto antes de qualquer autoavaliação** — pedir o fato primeiro ancora a resposta na realidade, não na autoimagem.
+>
+> **Como aplicar:** enviar 2–3 dias antes da 1:1/PDI. Resposta individual, sem nome de virtude
+> visível (os títulos de bloco abaixo são só para você organizar — no formulário real, use
+> apenas os números dos blocos: "Parte 1", "Parte 2"...). Nunca compartilhar respostas entre
+> liderados.
 
 ---
 
 ## Texto de abertura do formulário
 
-> Esse formulário não tem resposta certa nem vai ser usado contra você. A ideia é te ajudar a
-> enxergar com mais clareza como você está hoje em comportamentos que a gente valoriza aqui na
-> Foco, pra gente saber por onde começar seu desenvolvimento. Seja honesto(a) — quanto mais real,
-> mais eu consigo te ajudar de verdade.
->
-> Para cada afirmação, marque de 1 a 5:
-> **1 = quase nunca** · **2 = raramente** · **3 = às vezes** · **4 = a maior parte das vezes** · **5 = quase sempre**
+> Esse formulário não tem resposta certa. Não é sobre marcar a opção "boa" — é sobre a situação
+> que mais parece com o que você realmente faria ou fez. Pode ser sincero(a) mesmo que a resposta
+> não seja bonita: isso não vai ser usado contra você, é só pra eu entender por onde começar a te
+> ajudar. Quanto mais real, melhor eu consigo apoiar.
 
 ---
 
-## Bloco 1 — Virtudes de Liderança
+## Parte 1
 
-### Magnanimidade *(ânimo grande — mirar alto, para si e para o cliente/time)*
-1. (escala 1–5) *"Eu costumo propor melhorias ou ideias além do que foi pedido, mesmo sem garantia de que vão dar certo."*
-2. (aberta) Conte uma situação recente em que você foi além do combinado com um cliente ou colega — ou uma em que você sentiu vontade de ir além, mas recuou. O que te fez recuar?
+**1.1 (escolha forçada)** Uma campanha que você administra está com resultado ruim há 2 dias e o cliente já perguntou o que está havendo. Qual das duas reações abaixo está mais perto do que você realmente faria?
+- (a) Eu já mexo em alguma coisa (pauso, troco criativo, realoco verba) para mostrar movimento rápido ao cliente, e vou ajustando conforme o resultado aparece.
+- (b) Eu seguro a resposta ao cliente por mais um pouco enquanto reviso os números com calma, mesmo sabendo que ele está esperando.
 
-### Humildade *(reconhecer erros e limites, aceitar ser corrigido)*
-1. (escala 1–5) *"Quando cometo um erro numa campanha, assumo na hora, mesmo que isso me exponha na frente do cliente ou da equipe."*
-2. (escala 1–5) *"Peço ajuda a colegas ou à liderança assim que percebo que não vou dar conta de algo sozinho(a)."*
-3. (aberta) Qual foi o último feedback de melhoria que você recebeu? O que você fez com ele?
+**1.2 (frequência)** Nas últimas 2 semanas, quantas vezes você tomou uma decisão numa campanha (pausar, escalar, trocar criativo) **sem antes olhar** os números do dia?
+- ( ) Nenhuma vez · ( ) 1–2 vezes · ( ) 3–5 vezes · ( ) Mais de 5 vezes · ( ) Não sei dizer
 
----
+**1.3 (relato primeiro)** Descreva a última decisão que você tomou numa campanha só com base no seu instinto/experiência, sem checar os dados antes. O que aconteceu depois?
 
-## Bloco 2 — Virtudes Cardeais
-
-### Prudência *(decidir bem, com dados, antes de agir)*
-1. (escala 1–5) *"Antes de pausar, escalar ou mudar uma campanha, eu analiso os dados (CPL, CPC, CTR, histórico) em vez de agir por impulso ou pressão do cliente."*
-2. (aberta) Descreva uma decisão recente sobre uma campanha em que você teve que escolher entre agir rápido ou esperar mais dados. O que pesou na sua escolha?
-
-### Justiça *(dar a cada um o que é devido — prazos, verdade, cobrança)*
-1. (escala 1–5) *"Eu entrego relatórios, insights e tarefas dentro do prazo combinado (SLA do POP), mesmo quando ninguém está cobrando."*
-2. (escala 1–5) *"Eu falo a verdade para o cliente mesmo quando a notícia é ruim (queda de performance, erro, expectativa que não vai ser cumprida)."*
-3. (aberta) Alguma vez você atrasou uma entrega ou evitou dar uma notícia ruim para um cliente ou colega? O que aconteceu?
-
-### Coragem *(agir apesar do medo — puxar conversa difícil, assumir responsabilidade, propor)*
-1. (escala 1–5) *"Eu me sinto à vontade para dar uma notícia difícil a um cliente (queda de resultado, erro, revisão de expectativa)."*
-2. (escala 1–5) *"Eu cobro diretamente colegas de outros setores (ex.: criação) quando preciso de algo, mesmo que isso seja desconfortável."*
-3. (aberta) Qual situação no trabalho mais te dá medo ou desconforto hoje? O que você evita fazer por causa disso?
-
-### Autocontrole *(disciplina, constância, não ser dominado pela pressão ou pela dispersão)*
-1. (escala 1–5) *"Eu mantenho a rotina de registro (NAMTAB, tarefas no sistema) em dia, mesmo em semanas de muita pressão."*
-2. (escala 1–5) *"Eu consigo manter o foco no trabalho sem me dispersar (celular, redes sociais) durante o horário produtivo."*
-3. (aberta) O que mais tira sua constância/disciplina no dia a dia? Em que momento da semana você sente que perde o controle da rotina?
+**1.4 (escolha forçada)** Você percebe que uma tarefa vai atrasar. O prazo é hoje à tarde. O que você mais provavelmente faz primeiro?
+- (a) Aviso quem está esperando, mesmo sem ter ainda uma solução pronta.
+- (b) Tento resolver sozinho(a) até o último momento possível antes de avisar alguém.
 
 ---
 
-## Bloco 3 — Virtudes Teologais
+## Parte 2
 
-### Fé *(confiança — nos combinados, no propósito do trabalho, em ser confiável para o outro)*
-1. (escala 1–5) *"Eu confio que, se eu cumprir minha parte do combinado, a agência vai cumprir a dela comigo (crescimento, suporte, reconhecimento)."*
-2. (aberta) O que faria você confiar mais no processo de crescimento aqui na Foco?
+**2.1 (relato primeiro)** Conte a última vez que você errou algo numa campanha ou entrega (não precisa ser grave). O que você fez logo depois de perceber o erro?
 
-### Esperança *(acreditar que dá para crescer e melhorar, mesmo com dificuldade agora)*
-1. (escala 1–5) *"Mesmo quando uma campanha ou situação com cliente está difícil, eu acredito que dá pra reverter com esforço e método."*
-2. (aberta) Onde você se imagina daqui a 1–2 anos na sua carreira? O que te anima mais nisso, e o que te dá mais insegurança?
+**2.2 (escolha forçada)** Um cliente, numa reunião, questiona um resultado ruim e você sabe que parte do problema foi uma configuração que você fez errado. O que você tende a fazer?
+- (a) Explico o que houve tecnicamente, sem necessariamente apontar de quem foi a falha.
+- (b) Assumo diretamente que o erro foi meu, ali na hora, mesmo com o cliente presente.
+- (c) Explico o contexto (prazo apertado, mudança de escopo, etc.) que levou ao erro.
 
-### Caridade *(servir o outro de verdade — cliente, colegas, time)*
-1. (escala 1–5) *"Eu ajudo colegas (inclusive juniores) mesmo quando isso não é 'minha tarefa', sem esperar retorno."*
-2. (escala 1–5) *"Eu trato o resultado do cliente como se fosse meu próprio negócio, não só uma meta a bater."*
-3. (aberta) Conte uma vez recente em que você ajudou alguém (cliente ou colega) além do que era esperado de você.
+**2.3 (frequência)** Nas últimas semanas, quantas vezes você pediu ajuda pra alguém (colega ou liderança) numa tarefa que estava difícil, **antes** de estar realmente travado(a)?
+- ( ) Nenhuma vez · ( ) 1 vez · ( ) 2–3 vezes · ( ) Mais de 3 vezes
 
----
-
-## Fechamento
-
-- (aberta) Das 9 áreas acima, qual você sente que é seu ponto mais forte hoje?
-- (aberta) Qual você mais quer desenvolver nos próximos 3 meses?
-- (aberta) Tem alguma coisa que está pesando no seu dia a dia aqui que a gente ainda não conversou?
+**2.4 (relato primeiro)** Qual foi o último feedback de melhoria (não elogio) que você recebeu de alguém aqui? O que você respondeu ou pensou na hora?
 
 ---
 
-## Guia de leitura para a liderança (não enviar ao liderado)
+## Parte 3
 
-1. **Baseline = autoavaliação × sua observação.** Onde as notas dele(a) batem com o que você vê (1:1s, auditoria por amostragem, POP), é ponto de partida validado. Onde divergem — ex.: ele se dá 5 em Humildade mas você tem um episódio de transferência de culpa registrado — é o ponto mais importante da 1:1, não motivo para descartar a resposta.
-2. **Notas baixas não são alarme — são diagnóstico.** Servem para escolher 1–2 virtudes-prioridade no PDI (regra dos "poucos e focados", igual às metas técnicas: 2–4 no máximo).
-3. **Comparar respostas ao longo do tempo** (a cada ciclo de PDI) é o dado mais valioso — mostra evolução real, não é só uma foto única.
-4. **Nunca usar o formulário como prova/punição.** Se o liderado sentir que a autoavaliação será usada contra ele, as respostas seguintes deixam de ser sinceras.
+**3.1 (escolha forçada)** Você precisa de algo da equipe de criação e sabe que, se cobrar diretamente, pode gerar um clima chato. O que você mais provavelmente faz?
+- (a) Cobro diretamente a pessoa, aceitando o desconforto momentâneo.
+- (b) Peço para outra pessoa (ex.: a liderança) intermediar ou cobrar por mim.
+- (c) Deixo pra depois e sigo com o que já tenho, tentando não gerar atrito.
+
+**3.2 (frequência)** Nas últimas 2 semanas, quantas vezes surgiu uma situação em que você **evitou** dizer algo (pra cliente, colega ou liderança) por medo da reação da pessoa?
+- ( ) Nenhuma · ( ) 1 vez · ( ) 2–3 vezes · ( ) Mais de 3 vezes
+
+**3.3 (relato primeiro)** Descreva uma situação recente em que você teve vontade de falar algo (discordar, apontar um problema, propor algo diferente) e não falou. O que te segurou?
+
+---
+
+## Parte 4
+
+**4.1 (frequência)** Nas últimas 2 semanas, em quantos dias você deixou de registrar alguma tarefa/otimização no sistema (NAMTAB/SULTS) no mesmo dia em que ela aconteceu?
+- ( ) Nenhum dia · ( ) 1–2 dias · ( ) 3–5 dias · ( ) Mais de 5 dias
+
+**4.2 (escolha forçada)** No meio de um dia corrido, seu celular notifica algo pessoal (mensagem, rede social). O que costuma acontecer?
+- (a) Eu olho na hora e volto ao trabalho rapidinho.
+- (b) Eu seguro a curiosidade e só olho num intervalo/pausa.
+- (c) Depende muito do dia — às vezes olho na hora, às vezes esqueço completamente do celular.
+
+**4.3 (relato primeiro)** Qual foi o momento da última semana em que você sentiu que perdeu mais tempo ou constância do que gostaria? O que causou isso?
+
+---
+
+## Parte 5
+
+**5.1 (escolha forçada)** Pensando no seu crescimento aqui na Foco, qual frase está mais perto do que você sente hoje?
+- (a) Eu confio que, se eu entregar bem, a agência vai reconhecer e me dar oportunidade — só é questão de tempo.
+- (b) Eu não tenho tanta certeza de que meu esforço vai ser reconhecido do jeito que eu espero.
+- (c) Eu ainda não parei pra pensar nisso com clareza.
+
+**5.2 (aberta)** O que faria você confiar mais (ou menos) no processo de crescimento aqui?
+
+---
+
+## Parte 6
+
+**6.1 (escolha forçada)** Uma conta que você atende está indo mal há um tempo, apesar dos ajustes que você já tentou. O que mais se parece com o que você pensa?
+- (a) Ainda dá pra reverter, só precisa achar o ajuste certo.
+- (b) Talvez essa conta só não vá performar bem, independente do que eu faça.
+- (c) Varia — em algumas contas eu acredito que dá, em outras eu já meio que desisto por dentro.
+
+**6.2 (aberta)** Onde você se imagina daqui a 1–2 anos na sua carreira? O que te anima mais nisso, e o que te dá mais insegurança?
+
+---
+
+## Parte 7
+
+**7.1 (relato primeiro)** Conte a última vez que você ajudou um colega (inclusive alguém mais júnior) com algo que não era exatamente sua tarefa. Se não lembrar de nenhuma, tudo bem — pode dizer isso também.
+
+**7.2 (escolha forçada)** Você tem uma tarefa própria com prazo apertado e um colega pede ajuda numa coisa dele. O que você mais provavelmente faz?
+- (a) Ajudo mesmo assim, e me viro depois com o meu prazo.
+- (b) Explico que não posso agora e indico outra pessoa ou horário.
+- (c) Ajudo rapidamente algo pequeno, mas não me disponibilizo para mais que isso.
+
+---
+
+## Fechamento (igual para todos, sem forçar escolha)
+
+- (aberta) O que está funcionando bem pra você no seu trabalho hoje?
+- (aberta) O que mais tem te incomodado ou pesado ultimamente, mesmo que pareça pequeno?
+- (aberta) Tem alguma coisa que você gostaria que eu soubesse antes da nossa conversa?
+
+---
+
+## Chave de leitura para a liderança (não enviar ao liderado)
+
+| Parte | Virtude | O que observar |
+| --- | --- | --- |
+| 1 | Prudência | 1.1(b), 1.2 baixa frequência e 1.3 com aprendizado explícito = decide com dados. 1.1(a) e 1.4(b) recorrentes = tende a agir por impulso/pressão, mesmo que o discurso da pessoa diga o contrário. |
+| 2 | Humildade | 2.2(b) e 2.1 com responsabilização direta = humildade em ato. 2.2(a)/(c) e 2.1 com justificativa/terceirização da culpa = ponto a desenvolver — **não é pecado, é o diagnóstico que você quer** para calibrar o PDI. |
+| 3 | Coragem | 3.1(a) e baixa frequência em 3.2 = confronta o desconforto. 3.1(b)/(c) recorrentes = evita o atrito, ainda que a pessoa se ache corajosa. |
+| 4 | Autocontrole | Frequências altas em 4.1 e 4.2(a)/(c) = dispersão/baixa disciplina real, independente da autoimagem. |
+| 5 | Fé | 5.1(b)/(c) revela insegurança sobre o combinado — vale investigar na 1:1 antes de cobrar mais entrega. |
+| 6 | Esperança | 6.1(b)/(c) recorrente indica desânimo específico com contas — cruzar com dados reais da conta antes de concluir. |
+| 7 | Caridade | 7.1 sem exemplo e 7.2(b)/(c) recorrente = ajuda condicionada; 7.1 com exemplo espontâneo e 7.2(a) = serviço real. |
+
+**Como usar:**
+1. **Ignore a "nota" e olhe o padrão.** Este formulário não gera uma pontuação limpa de 1 a 5 — gera pistas comportamentais. O valor está em cruzar a escolha forçada + a frequência + o relato concreto da mesma parte: quando os três apontam na mesma direção, você tem um baseline confiável.
+2. **Divergência com o que você observa é o material da 1:1, não motivo para descartar a resposta.** Se a Mavi escolhe 1.1(b) mas você já viu o oposto na prática, é exatamente isso que vira pauta — com fatos, não com acusação.
+3. **Não devolva a chave de leitura para o liderado.** O valor do formulário desaparece se ele souber o que cada escolha "revela" da próxima vez.
+4. **Repita a cada ciclo de PDI** com os mesmos itens — a comparação ao longo do tempo é mais valiosa que qualquer resposta isolada.
+5. **Nunca puna uma resposta sincera.** Se uma resposta franca gerar cobrança dura na 1:1 seguinte, as próximas respostas do time inteiro passam a ser as "corretas" — e você perde a ferramenta.
