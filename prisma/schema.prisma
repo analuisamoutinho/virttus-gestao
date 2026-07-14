@@ -47,6 +47,8 @@ model Organization {
   scripts      ConversationScript[]
   auditLogs    AuditLog[]
   invites      Invite[]
+  trainings    Training[]
+  notes        Note[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -82,6 +84,8 @@ model User {
   memberProfile    TeamMember?  @relation("MemberUser")
   authoredFeedback Feedback[]   @relation("FeedbackAuthor")
   auditLogs        AuditLog[]
+  createdTrainings Training[]   @relation("TrainingCreatedBy")
+  authoredNotes    Note[]       @relation("NoteAuthor")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -383,6 +387,65 @@ model ConversationScript {
 
   @@index([organizationId])
   @@index([teamMemberId])
+}
+
+// ─────────────────────────── TREINAMENTOS ───────────────────────────
+// Cronograma do setor: visível apenas para quem está logado na organização
+// (hoje, só a liderança) — mesmo isolamento por organizationId do resto do app.
+enum TrainingStatus {
+  PLANNED
+  DONE
+  CANCELED
+}
+
+model Training {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdById    String?
+  createdBy      User?        @relation("TrainingCreatedBy", fields: [createdById], references: [id])
+
+  title       String
+  description String?        @db.Text
+  module      String? // ex.: "Mês 1 — Engenharia de Prompts e IA aplicada"
+  scheduledAt DateTime
+  status      TrainingStatus @default(PLANNED)
+  focusVirtue Virtue?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([organizationId, scheduledAt])
+}
+
+// ─────────────────────────── BIBLIOTECA DE LIDERANÇA ───────────────────────────
+// Base de conhecimento, manuais e formulários da liderança — privado à
+// organização (hoje, só quem está logado, isto é, a própria liderança).
+enum NoteCategory {
+  BASE_CONHECIMENTO
+  PDI_SETOR
+  CONTEXTO_SETOR
+  FORMULARIO
+  OUTRO
+}
+
+model Note {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  authorId       String?
+  author         User?        @relation("NoteAuthor", fields: [authorId], references: [id])
+
+  category NoteCategory @default(OUTRO)
+  title    String
+  content  String       @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([organizationId, category])
 }
 
 // ─────────────────────────── AUDITORIA (LGPD) ───────────────────────────
