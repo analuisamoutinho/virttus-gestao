@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { getContext } from "@/server/context";
 import { db } from "@/server/db";
 import { listMembers } from "@/server/members";
-import { Card, EmptyState } from "@/components/ui";
+import { Card, EmptyState, PageHeader, SectionTitle, ButtonLink } from "@/components/ui";
 import { GoalCard } from "@/components/GoalCard";
 import { currentQuarter } from "@/server/services/okr";
 import { NewGoalForm } from "./GoalForms";
@@ -24,18 +23,19 @@ export default async function MetasPage() {
 
   return (
     <div>
-      <h1 className="mb-6 font-sora text-2xl font-bold text-deep">Metas &amp; OKR</h1>
+      <PageHeader
+        icon="goals"
+        eyebrow="Objetivos & resultados-chave"
+        title="Metas & OKR"
+        subtitle="Progresso calculado automaticamente a partir dos key results."
+      />
 
       {members.length === 0 ? (
         <EmptyState
           icon="◉"
           title="Cadastre a equipe primeiro"
           description="Você precisa de pelo menos um liderado para definir objetivos e key results."
-          action={
-            <Link href="/equipe" className="text-sm font-semibold text-purple">
-              Ir para Equipe →
-            </Link>
-          }
+          action={<ButtonLink href="/equipe" icon="team">Ir para Equipe</ButtonLink>}
         />
       ) : (
         <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
@@ -53,8 +53,8 @@ export default async function MetasPage() {
             )}
           </div>
 
-          <Card className="h-fit">
-            <h2 className="mb-3 font-sora text-lg font-semibold text-deep">Novo objetivo</h2>
+          <Card className="h-fit lg:sticky lg:top-24">
+            <SectionTitle hint="Defina o objetivo e seus KRs.">Novo objetivo</SectionTitle>
             <NewGoalForm members={members} quarter={currentQuarter()} />
           </Card>
         </div>

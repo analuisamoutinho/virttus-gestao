@@ -1,6 +1,6 @@
 import { getContext } from "@/server/context";
 import { db } from "@/server/db";
-import { Card, EmptyState } from "@/components/ui";
+import { Card, EmptyState, PageHeader, SectionTitle, Badge } from "@/components/ui";
 import { NewNoteForm, SeedNotesButton, NoteCard } from "./NoteForms";
 import type { Note, NoteCategory } from "@prisma/client";
 
@@ -34,11 +34,12 @@ export default async function BibliotecaPage() {
 
   return (
     <div>
-      <h1 className="mb-1 font-sora text-2xl font-bold text-deep">Biblioteca de liderança</h1>
-      <p className="mb-6 text-sm text-muted">
-        Base de conhecimento, PDI do setor e formulários — visível só para você, nesta
-        organização.
-      </p>
+      <PageHeader
+        icon="library"
+        eyebrow="Base de conhecimento"
+        title="Biblioteca de liderança"
+        subtitle="Manuais, PDI do setor e formulários — visível só para você nesta organização."
+      />
 
       {notes.length === 0 ? (
         <EmptyState
@@ -52,10 +53,13 @@ export default async function BibliotecaPage() {
           <div className="flex flex-col gap-6">
             {groups.map(([cat, items]) => (
               <Card key={cat}>
-                <h2 className="mb-1 font-sora text-sm font-semibold uppercase tracking-wide text-muted">
-                  {CATEGORY_LABEL[cat]}
-                </h2>
-                <div>
+                <div className="mb-2 flex items-center gap-2">
+                  <h2 className="font-sora text-sm font-bold text-deep">
+                    {CATEGORY_LABEL[cat]}
+                  </h2>
+                  <Badge tone="purple">{items.length}</Badge>
+                </div>
+                <div className="flex flex-col divide-y divide-border">
                   {items.map((n) => (
                     <NoteCard key={n.id} id={n.id} title={n.title} content={n.content} />
                   ))}
@@ -64,8 +68,8 @@ export default async function BibliotecaPage() {
             ))}
           </div>
 
-          <Card className="h-fit">
-            <h2 className="mb-3 font-sora text-lg font-semibold text-deep">Nova nota</h2>
+          <Card className="h-fit lg:sticky lg:top-24">
+            <SectionTitle hint="Adicione um documento à biblioteca.">Nova nota</SectionTitle>
             <NewNoteForm />
           </Card>
         </div>

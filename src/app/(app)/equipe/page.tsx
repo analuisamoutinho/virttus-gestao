@@ -1,7 +1,15 @@
 import Link from "next/link";
 import { getContext } from "@/server/context";
 import { db } from "@/server/db";
-import { Card, EmptyState } from "@/components/ui";
+import {
+  Card,
+  EmptyState,
+  PageHeader,
+  SectionTitle,
+  Avatar,
+  Badge,
+  Icon,
+} from "@/components/ui";
 import { PLAN_LIMITS } from "@/server/plan/limits";
 import { hasFeature } from "@/server/plan/gate";
 import { AddMemberForm } from "./AddMemberForm";
@@ -16,25 +24,34 @@ export default async function EquipePage() {
 
   const limit = PLAN_LIMITS[org.plan].maxMembers;
   const atLimit = members.length >= limit;
+  const limitLabel = Number.isFinite(limit) ? limit : "∞";
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="font-sora text-2xl font-bold text-deep">Equipe</h1>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-muted">
-            {members.length}/{Number.isFinite(limit) ? limit : "∞"} liderados ·{" "}
-            {PLAN_LIMITS[org.plan].label}
-          </span>
-          {hasFeature(org, "export") ? (
-            <a href="/api/export/team" className="text-sm font-semibold text-purple">
-              Exportar CSV
-            </a>
-          ) : null}
-        </div>
-      </div>
+      <PageHeader
+        icon="team"
+        eyebrow="Pessoas"
+        title="Equipe"
+        subtitle="Gerencie seus liderados e acompanhe cada perfil."
+        actions={
+          <div className="flex items-center gap-3">
+            <Badge tone={atLimit ? "warn" : "blue"}>
+              {members.length}/{limitLabel} liderados
+            </Badge>
+            {hasFeature(org, "export") ? (
+              <a
+                href="/api/export/team"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-purple hover:text-purple-600"
+              >
+                <Icon.download width={16} height={16} />
+                Exportar CSV
+              </a>
+            ) : null}
+          </div>
+        }
+      />
 
-      <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+      <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
         <div>
           {members.length === 0 ? (
             <EmptyState
@@ -43,36 +60,47 @@ export default async function EquipePage() {
               description="Adicione a primeira pessoa da sua equipe usando o formulário ao lado."
             />
           ) : (
-            <div className="flex flex-col gap-2">
-              <p className="mb-1 text-xs text-muted">
-                Clique numa pessoa para editar dados ou remover.
+            <>
+              <p className="mb-3 text-xs text-muted">
+                Clique numa pessoa para ver o perfil, editar ou remover.
               </p>
-              {members.map((m) => (
-                <Link key={m.id} href={`/equipe/${m.id}`} className="block">
-                  <Card className="flex items-center justify-between py-3.5 transition hover:border-blue hover:shadow-md">
-                    <div>
-                      <p className="text-sm font-semibold text-deep">{m.name}</p>
-                      <p className="text-xs text-muted">{m.role ?? "—"}</p>
-                    </div>
-                    <span className="text-xs text-muted">{m.email ?? ""}</span>
-                  </Card>
-                </Link>
-              ))}
-            </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {members.map((m) => (
+                  <Link key={m.id} href={`/equipe/${m.id}`} className="group block">
+                    <Card
+                      className="flex items-center gap-3.5 py-4 group-hover:border-blue"
+                      hover
+                    >
+                      <Avatar name={m.name} />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold text-deep">
+                          {m.name}
+                        </p>
+                        <p className="truncate text-xs text-muted">
+                          {m.role ?? "Sem cargo definido"}
+                        </p>
+                      </div>
+                      <span className="text-muted-light transition group-hover:translate-x-0.5 group-hover:text-blue">
+                        <Icon.chevronRight width={18} height={18} />
+                      </span>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </>
           )}
         </div>
 
-        <Card className="h-fit">
-          <h2 className="mb-3 font-sora text-lg font-semibold text-deep">
+        <Card className="h-fit lg:sticky lg:top-24">
+          <SectionTitle hint="Cadastre um novo liderado no time.">
             Adicionar liderado
-          </h2>
+          </SectionTitle>
           <AddMemberForm atLimit={atLimit} />
           {atLimit ? (
-            <p className="mt-3 text-xs text-muted">
-              Limite do plano {PLAN_LIMITS[org.plan].label} atingido.{" "}
-              <span className="font-medium text-purple">Faça upgrade</span> para adicionar
-              mais.
-            </p>
+            <div className="mt-4 rounded-sm bg-warn-soft px-3 py-2.5 text-xs text-warn">
+              Limite do plano <strong>{PLAN_LIMITS[org.plan].label}</strong> atingido.{" "}
+              <span className="font-semibold underline">Faça upgrade</span> para adicionar mais.
+            </div>
           ) : null}
         </Card>
       </div>

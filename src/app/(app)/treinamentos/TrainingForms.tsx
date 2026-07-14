@@ -91,7 +91,7 @@ export function TrainingStatusControls({
         onClick={() => {
           if (confirm("Remover este treinamento?")) start(() => deleteTraining(id));
         }}
-        className="text-xs font-medium text-red-600 hover:underline"
+        className="text-xs font-medium text-danger hover:underline"
       >
         Excluir
       </button>

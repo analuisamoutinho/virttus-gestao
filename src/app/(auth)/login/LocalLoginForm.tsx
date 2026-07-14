@@ -7,8 +7,16 @@ export function LocalLoginForm({ error }: { error?: string }) {
       <TextField label="Seu nome" name="name" placeholder="Ana Líder" required />
       <TextField label="Seu e-mail" name="email" type="email" placeholder="voce@empresa.com" required />
       <TextField label="Senha de acesso" name="password" type="password" required />
-      {error === "email" ? <p className="text-sm text-red-600">Informe um e-mail.</p> : null}
-      {error === "password" ? <p className="text-sm text-red-600">Senha incorreta.</p> : null}
+      {error === "email" ? (
+        <p className="rounded-sm bg-danger-soft px-3 py-2 text-sm font-medium text-danger">
+          Informe um e-mail.
+        </p>
+      ) : null}
+      {error === "password" ? (
+        <p className="rounded-sm bg-danger-soft px-3 py-2 text-sm font-medium text-danger">
+          Senha incorreta.
+        </p>
+      ) : null}
       <Button type="submit" className="w-full">
         Entrar
       </Button>

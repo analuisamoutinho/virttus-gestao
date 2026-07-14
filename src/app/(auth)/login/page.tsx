@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth, signIn } from "@/server/auth";
-import { Card, Button, Logo } from "@/components/ui";
+import { Card, Button, Logo, Icon } from "@/components/ui";
 import { LocalLoginForm } from "./LocalLoginForm";
 
 const GOOGLE_CONFIGURED = Boolean(
@@ -17,37 +17,77 @@ export default async function LoginPage({
   if (session?.user) redirect("/dashboard");
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-grad-soft px-6">
-      <Card className="w-full max-w-sm text-center">
-        <div className="mb-6 flex flex-col items-center gap-2">
-          <Logo className="text-2xl" />
-          <p className="text-sm text-muted">Entre para desenvolver sua equipe.</p>
+    <main className="grid min-h-screen lg:grid-cols-2">
+      {/* Painel de marca */}
+      <aside className="relative hidden overflow-hidden bg-grad-deep p-12 text-white lg:flex lg:flex-col lg:justify-between">
+        <div className="absolute inset-0 bg-grad-mesh opacity-60" aria-hidden />
+        <div className="relative">
+          <Logo className="text-2xl text-white [&_.text-gradient]:text-white" />
         </div>
-
-        {GOOGLE_CONFIGURED ? (
-          <form
-            action={async () => {
-              "use server";
-              await signIn("google", { redirectTo: "/onboarding" });
-            }}
-          >
-            <Button type="submit" variant="outline" className="w-full">
-              <GoogleIcon />
-              Continuar com Google
-            </Button>
-          </form>
-        ) : LOCAL_LOGIN_CONFIGURED ? (
-          <LocalLoginForm error={searchParams.error} />
-        ) : (
-          <p className="text-sm text-red-600">
-            Login não configurado. Defina AUTH_GOOGLE_ID/SECRET ou LOCAL_LOGIN_PASSWORD.
+        <div className="relative max-w-md">
+          <h2 className="font-sora text-3xl font-bold leading-tight">
+            Gestão vira <span className="text-white/70">desenvolvimento</span>.
+          </h2>
+          <p className="mt-4 text-white/70">
+            Desenvolva seus liderados com base nas 9 virtudes cardeais de Alexandre
+            Havard. 1:1s, feedback SBI, metas e PDI num só lugar.
           </p>
-        )}
-
-        <p className="mt-6 text-xs text-muted">
-          Ao continuar, você concorda com o tratamento de dados conforme a LGPD.
+          <ul className="mt-8 flex flex-col gap-3 text-sm text-white/80">
+            {["1:1s estruturados e recorrentes", "Feedback SBI ancorado em virtudes", "PDIs e OKRs por trimestre"].map(
+              (item) => (
+                <li key={item} className="flex items-center gap-3">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15">
+                    <Icon.check width={14} height={14} />
+                  </span>
+                  {item}
+                </li>
+              ),
+            )}
+          </ul>
+        </div>
+        <p className="relative text-xs text-white/40">
+          © {new Date().getFullYear()} Virttus · Desenvolvimento de liderados
         </p>
-      </Card>
+      </aside>
+
+      {/* Formulário */}
+      <div className="flex items-center justify-center bg-bg bg-grad-mesh px-6 py-12">
+        <div className="w-full max-w-sm">
+          <div className="mb-8 text-center lg:hidden">
+            <Logo className="justify-center text-2xl" />
+          </div>
+          <Card className="text-center">
+            <div className="mb-6">
+              <h1 className="font-sora text-xl font-bold text-deep">Bem-vindo de volta</h1>
+              <p className="mt-1 text-sm text-muted">Entre para desenvolver sua equipe.</p>
+            </div>
+
+            {GOOGLE_CONFIGURED ? (
+              <form
+                action={async () => {
+                  "use server";
+                  await signIn("google", { redirectTo: "/onboarding" });
+                }}
+              >
+                <Button type="submit" variant="outline" className="w-full">
+                  <GoogleIcon />
+                  Continuar com Google
+                </Button>
+              </form>
+            ) : LOCAL_LOGIN_CONFIGURED ? (
+              <LocalLoginForm error={searchParams.error} />
+            ) : (
+              <p className="rounded-sm bg-danger-soft px-3 py-2 text-sm text-danger">
+                Login não configurado. Defina AUTH_GOOGLE_ID/SECRET ou LOCAL_LOGIN_PASSWORD.
+              </p>
+            )}
+
+            <p className="mt-6 text-xs text-muted">
+              Ao continuar, você concorda com o tratamento de dados conforme a LGPD.
+            </p>
+          </Card>
+        </div>
+      </div>
     </main>
   );
 }

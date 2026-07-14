@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { getContext } from "@/server/context";
 import { db } from "@/server/db";
 import { listMembers } from "@/server/members";
 import { hasFeature } from "@/server/plan/gate";
 import { PLAN_LIMITS } from "@/server/plan/limits";
-import { Card, EmptyState } from "@/components/ui";
+import { Card, EmptyState, PageHeader, SectionTitle, ButtonLink } from "@/components/ui";
 import { ConversationScriptCard } from "@/components/ConversationScriptCard";
 import { ConversationForm } from "./ConversationForm";
 
@@ -15,7 +14,12 @@ export default async function ConversaPage() {
   if (!hasFeature(org, "conversation_builder")) {
     return (
       <div>
-        <h1 className="mb-6 font-sora text-2xl font-bold text-deep">Conversa</h1>
+        <PageHeader
+          icon="chat"
+          eyebrow="Construtor de roteiros"
+          title="Conversa"
+          subtitle="Roteiros para conversas difíceis a partir do perfil do liderado."
+        />
         <EmptyState
           icon="◌"
           title="Recurso do plano Pro"
@@ -37,18 +41,19 @@ export default async function ConversaPage() {
 
   return (
     <div>
-      <h1 className="mb-6 font-sora text-2xl font-bold text-deep">Conversa</h1>
+      <PageHeader
+        icon="chat"
+        eyebrow="Construtor de roteiros"
+        title="Conversa"
+        subtitle="Abertura, perguntas socráticas e fechamento — personalizados por pessoa."
+      />
 
       {members.length === 0 ? (
         <EmptyState
           icon="◌"
           title="Cadastre a equipe primeiro"
           description="Você precisa de pelo menos um liderado para gerar um roteiro de conversa."
-          action={
-            <Link href="/equipe" className="text-sm font-semibold text-purple">
-              Ir para Equipe →
-            </Link>
-          }
+          action={<ButtonLink href="/equipe" icon="team">Ir para Equipe</ButtonLink>}
         />
       ) : (
         <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
@@ -69,11 +74,10 @@ export default async function ConversaPage() {
             )}
           </div>
 
-          <Card className="h-fit">
-            <h2 className="mb-1 font-sora text-lg font-semibold text-deep">Novo roteiro</h2>
-            <p className="mb-3 text-xs text-muted">
-              Abertura · Perguntas socráticas · Fechamento
-            </p>
+          <Card className="h-fit lg:sticky lg:top-24">
+            <SectionTitle hint="Abertura · Perguntas socráticas · Fechamento">
+              Novo roteiro
+            </SectionTitle>
             <ConversationForm members={members} />
           </Card>
         </div>

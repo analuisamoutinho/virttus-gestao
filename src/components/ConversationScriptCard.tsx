@@ -1,5 +1,5 @@
 import type { Virtue, ConversationContextType } from "@prisma/client";
-import { Card } from "@/components/ui";
+import { Card, Badge } from "@/components/ui";
 import { VirtueBadge } from "@/components/VirtueBadge";
 import { conversationTypeLabel } from "@/lib/conversation";
 import { formatDateTime } from "@/lib/format";
@@ -19,32 +19,33 @@ export type ConversationScriptView = {
 export function ConversationScriptCard({ script }: { script: ConversationScriptView }) {
   const questions = Array.isArray(script.questions) ? (script.questions as string[]) : [];
   return (
-    <Card className="border-l-4 border-l-purple">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-2">
-          <span className="rounded-full bg-grad-soft px-2 py-0.5 text-xs font-medium text-purple">
-            {conversationTypeLabel(script.type)}
-          </span>
+    <Card className="border-l-4 border-l-purple" hover>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge tone="purple">{conversationTypeLabel(script.type)}</Badge>
           {script.memberName ? (
             <span className="text-sm font-semibold text-deep">{script.memberName}</span>
           ) : null}
           {script.focusVirtue ? <VirtueBadge virtue={script.focusVirtue} /> : null}
         </div>
-        <span className="text-xs text-muted">{formatDateTime(script.createdAt)}</span>
+        <span className="shrink-0 text-xs text-muted">{formatDateTime(script.createdAt)}</span>
       </div>
 
-      <p className="mt-2 text-sm text-muted">{script.situation}</p>
+      <p className="mt-3 text-sm italic text-muted">“{script.situation}”</p>
 
-      <div className="mt-3 flex flex-col gap-3 text-sm">
+      <div className="mt-4 flex flex-col gap-3 text-sm">
         <Section label="Abertura" text={script.opening} />
         {questions.length > 0 ? (
-          <div>
-            <span className="text-xs font-medium uppercase tracking-wide text-muted">
+          <div className="rounded-sm border border-border bg-bg p-3">
+            <span className="text-[11px] font-bold uppercase tracking-wide text-purple">
               Perguntas socráticas
             </span>
-            <ul className="mt-1 list-disc space-y-1 pl-5 text-deep">
+            <ul className="mt-2 flex flex-col gap-1.5 text-deep">
               {questions.map((q, i) => (
-                <li key={i}>{q}</li>
+                <li key={i} className="flex gap-2">
+                  <span className="font-sora text-xs font-bold text-purple">{i + 1}.</span>
+                  {q}
+                </li>
               ))}
             </ul>
           </div>
@@ -59,8 +60,8 @@ function Section({ label, text }: { label: string; text: string | null }) {
   if (!text) return null;
   return (
     <div>
-      <span className="text-xs font-medium uppercase tracking-wide text-muted">{label}</span>
-      <p className="whitespace-pre-wrap text-deep">{text}</p>
+      <span className="text-[11px] font-bold uppercase tracking-wide text-muted">{label}</span>
+      <p className="mt-0.5 whitespace-pre-wrap text-deep">{text}</p>
     </div>
   );
 }
