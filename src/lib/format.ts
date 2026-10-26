@@ -13,3 +13,10 @@ const dtTime = new Intl.DateTimeFormat("pt-BR", {
 
 export const formatDate = (d: Date) => dt.format(d);
 export const formatDateTime = (d: Date) => dtTime.format(d);
+
+const brl = new Intl.NumberFormat("pt-BR", {
+  style: "currency",
+  currency: "BRL",
+  maximumFractionDigits: 0,
+});
+export const formatBRL = (n: number) => brl.format(n);

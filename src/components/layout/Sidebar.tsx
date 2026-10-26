@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Logo, Icon, type IconName } from "@/components/ui";
 
 type NavItem = { href: string; label: string; icon: IconName };
-type NavGroup = { title: string; items: NavItem[] };
+type NavGroup = { title: string; items: NavItem[]; adminOnly?: boolean };
 
 const NAV: NavGroup[] = [
   {
@@ -23,11 +23,18 @@ const NAV: NavGroup[] = [
       { href: "/feedback", label: "Feedback", icon: "feedback" },
       { href: "/metas", label: "Metas OKR", icon: "goals" },
       { href: "/pdi", label: "PDI", icon: "pdi" },
+      { href: "/treino-feedback", label: "Treino de feedback", icon: "mic" },
+      { href: "/feedback-gestor", label: "Feedback ao gestor", icon: "inbox" },
     ],
+  },
+  {
+    title: "Agenda",
+    items: [{ href: "/calls", label: "Calendário de calls", icon: "calendar" }],
   },
   {
     title: "Conhecimento",
     items: [
+      { href: "/central", label: "Central de desenvolvimento", icon: "compass" },
       { href: "/treinamentos", label: "Treinamentos", icon: "training" },
       { href: "/biblioteca", label: "Biblioteca", icon: "library" },
       { href: "/conversa", label: "Conversa", icon: "chat" },
@@ -35,15 +42,23 @@ const NAV: NavGroup[] = [
   },
   {
     title: "Gestão",
-    items: [{ href: "/rh", label: "Painel de RH", icon: "hr" }],
+    items: [
+      { href: "/rh", label: "Painel de RH", icon: "hr" },
+      { href: "/talentos", label: "Banco de talentos", icon: "talent" },
+    ],
+  },
+  {
+    title: "Administração",
+    adminOnly: true,
+    items: [{ href: "/admin", label: "Visão do administrador", icon: "shield" }],
   },
 ];
 
-function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
+function NavLinks({ onNavigate, isAdmin }: { onNavigate?: () => void; isAdmin: boolean }) {
   const pathname = usePathname();
   return (
     <nav className="flex flex-col gap-6">
-      {NAV.map((group) => (
+      {NAV.filter((group) => !group.adminOnly || isAdmin).map((group) => (
         <div key={group.title}>
           <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-muted-light">
             {group.title}
@@ -101,7 +116,13 @@ function PlanFooter({ planLabel }: { planLabel: string }) {
   );
 }
 
-export function Sidebar({ planLabel = "" }: { planLabel?: string }) {
+export function Sidebar({
+  planLabel = "",
+  isAdmin = false,
+}: {
+  planLabel?: string;
+  isAdmin?: boolean;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -140,7 +161,7 @@ export function Sidebar({ planLabel = "" }: { planLabel?: string }) {
                 </svg>
               </button>
             </div>
-            <NavLinks onNavigate={() => setOpen(false)} />
+            <NavLinks onNavigate={() => setOpen(false)} isAdmin={isAdmin} />
             {planLabel ? <PlanFooter planLabel={planLabel} /> : null}
           </aside>
         </div>
@@ -152,7 +173,7 @@ export function Sidebar({ planLabel = "" }: { planLabel?: string }) {
           <Logo />
         </div>
         <div className="mt-8 flex flex-1 flex-col">
-          <NavLinks />
+          <NavLinks isAdmin={isAdmin} />
           {planLabel ? <PlanFooter planLabel={planLabel} /> : null}
         </div>
       </aside>
