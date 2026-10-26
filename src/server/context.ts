@@ -27,6 +27,13 @@ export const getContext = cache(async (): Promise<AppContext> => {
   return { userId, role, org };
 });
 
+// Guard de páginas restritas ao administrador da organização.
+export async function requireAdmin(): Promise<AppContext> {
+  const ctx = await getContext();
+  if (ctx.role !== "ADMIN") redirect("/dashboard");
+  return ctx;
+}
+
 // Versão que não redireciona — usada no fluxo de onboarding.
 export const getSessionUser = cache(async () => {
   const session = await auth();

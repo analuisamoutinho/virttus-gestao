@@ -52,6 +52,18 @@ prisma/                # schema.prisma, seed.ts
 tests/unit             # Vitest — score de virtude, alertas, gating
 ```
 
+## Módulos adicionais
+| Rota | O que faz |
+|---|---|
+| `/calls` | Calendário mensal de calls (mostra também treinamentos e 1:1s). Cada call recebe a **transcrição** (colar ou importar `.txt/.vtt/.srt`), com busca em todas as transcrições e destaques de decisões/próximos passos. |
+| `/treino-feedback` | Simulador de **feedback difícil**: 5 cenários fictícios × 3 dificuldades, chat com a persona, "clima" da conversa em tempo real e avaliação final (SBI, escuta, respeito, encaminhamento). Funciona sem IA (regras); com `ANTHROPIC_API_KEY` a persona e o coach usam o Claude. |
+| `/talentos` | **Banco de talentos** com *lead scoring* da vaga: fit 0–100 por candidato (requisitos 35, diferenciais 10, experiência 15, virtudes 20, entrevista 15, pretensão 5), com explicação por critério. |
+| `/feedback-gestor` · `/anonimo/[token]` | **Feedback anônimo ao gestor**: link público por gestor (sem login), 6 notas + continue/comece/pare. Sem autor, IP ou horário (só a semana); resultados só a partir de 3 respostas. |
+| `/central` | **Central de desenvolvimento**: mural de livros, podcasts, vídeos, cursos e artigos, com filtro, busca e fixação. |
+| `/admin` | **Acesso de administrador** (role `ADMIN`): visão consolidada de todos os gestores/times, feedback anônimo de cada gestor, papéis dos usuários e auditoria. |
+
+Variáveis opcionais: `ANTHROPIC_API_KEY` e `ANTHROPIC_MODEL` (padrão `claude-sonnet-5-5`) para o treino de feedback.
+
 ## Roadmap
 - **Fase 1 ✅** Auth, multi-tenancy, cadastro de equipe, dashboard básico.
 - **Fase 2** 1:1s, Feedback SBI, Perfil pessoal.

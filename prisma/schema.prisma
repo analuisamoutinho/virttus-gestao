@@ -37,18 +37,24 @@ model Organization {
   stripeSubscriptionId String?   @unique
   currentPeriodEnd     DateTime?
 
-  users        User[]
-  teamMembers  TeamMember[]
-  oneOnOnes    OneOnOne[]
-  feedbacks    Feedback[]
-  goals        Goal[]
-  pdis         PDI[]
-  virtueScores VirtueScore[]
-  scripts      ConversationScript[]
-  auditLogs    AuditLog[]
-  invites      Invite[]
-  trainings    Training[]
-  notes        Note[]
+  users            User[]
+  teamMembers      TeamMember[]
+  oneOnOnes        OneOnOne[]
+  feedbacks        Feedback[]
+  goals            Goal[]
+  pdis             PDI[]
+  virtueScores     VirtueScore[]
+  scripts          ConversationScript[]
+  auditLogs        AuditLog[]
+  invites          Invite[]
+  trainings        Training[]
+  notes            Note[]
+  calls            Call[]
+  practices        FeedbackPractice[]
+  openings         JobOpening[]
+  candidates       Candidate[]
+  managerFeedbacks ManagerFeedback[]
+  resources        DevResource[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -80,12 +86,22 @@ model User {
   sessions Session[]
 
   // relações de negócio
-  ledMembers       TeamMember[] @relation("LeaderToMembers")
-  memberProfile    TeamMember?  @relation("MemberUser")
-  authoredFeedback Feedback[]   @relation("FeedbackAuthor")
-  auditLogs        AuditLog[]
-  createdTrainings Training[]   @relation("TrainingCreatedBy")
-  authoredNotes    Note[]       @relation("NoteAuthor")
+  ledMembers        TeamMember[]       @relation("LeaderToMembers")
+  memberProfile     TeamMember?        @relation("MemberUser")
+  authoredFeedback  Feedback[]         @relation("FeedbackAuthor")
+  auditLogs         AuditLog[]
+  createdTrainings  Training[]         @relation("TrainingCreatedBy")
+  authoredNotes     Note[]             @relation("NoteAuthor")
+  createdCalls      Call[]             @relation("CallCreatedBy")
+  practices         FeedbackPractice[]
+  createdOpenings   JobOpening[]       @relation("OpeningCreatedBy")
+  createdCandidates Candidate[]        @relation("CandidateCreatedBy")
+  managerFeedbacks  ManagerFeedback[]  @relation("ManagerFeedbackManager")
+  createdResources  DevResource[]      @relation("ResourceCreatedBy")
+
+  // Link público (sem login) do formulário anônimo em que os liderados avaliam
+  // este gestor. Rotacionar o token invalida o link anterior.
+  anonFeedbackToken String? @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -446,6 +462,219 @@ model Note {
 
   @@index([organizationId])
   @@index([organizationId, category])
+}
+
+// ─────────────────────────── CALENDÁRIO DE CALLS ───────────────────────────
+// Calls do time (alinhamentos, 1:1s, treinamentos...) com a transcrição
+// anexada à própria call — fonte para busca e resumo das decisões do time.
+enum CallKind {
+  ALINHAMENTO
+  ONE_ON_ONE
+  TREINAMENTO
+  CLIENTE
+  OUTRO
+}
+
+model Call {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdById    String?
+  createdBy      User?        @relation("CallCreatedBy", fields: [createdById], references: [id])
+
+  title        String
+  kind         CallKind @default(ALINHAMENTO)
+  scheduledAt  DateTime
+  durationMin  Int      @default(30)
+  meetingUrl   String?
+  participants String? // nomes separados por vírgula
+  notes        String?  @db.Text
+
+  transcript CallTranscript?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, scheduledAt])
+}
+
+model CallTranscript {
+  id             String @id @default(cuid())
+  organizationId String
+  callId         String @unique
+  call           Call   @relation(fields: [callId], references: [id], onDelete: Cascade)
+
+  content String @db.Text
+  source  String @default("manual") // "manual", "upload"...
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+}
+
+// ─────────────────────────── TREINO DE FEEDBACK DIFÍCIL ───────────────────────────
+// Simulação de conversa difícil com uma persona fictícia (nenhum dado de
+// liderado real entra na simulação). Privada a quem treinou.
+enum PracticeStatus {
+  IN_PROGRESS
+  COMPLETED
+}
+
+model FeedbackPractice {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  scenarioKey String
+  difficulty  Int            @default(2) // 1 receptivo · 2 defensivo · 3 hostil/emocional
+  messages    Json // [{ role: "leader" | "persona", content, at }]
+  status      PracticeStatus @default(IN_PROGRESS)
+  score       Int? // 0–100, preenchido ao encerrar
+  debrief     Json?
+  engine      String         @default("rules") // "rules" | "llm"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, userId, createdAt])
+}
+
+// ─────────────────────────── BANCO DE TALENTOS ───────────────────────────
+enum JobStatus {
+  OPEN
+  PAUSED
+  CLOSED
+}
+
+model JobOpening {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdById    String?
+  createdBy      User?        @relation("OpeningCreatedBy", fields: [createdById], references: [id])
+
+  title       String
+  area        String?
+  location    String?
+  description String?   @db.Text
+  status      JobStatus @default(OPEN)
+
+  // Critérios do "lead scoring" da vaga — ver server/services/talent-score.ts
+  requiredSkills String[]
+  desiredSkills  String[]
+  minYears       Int      @default(0)
+  salaryMin      Int?
+  salaryMax      Int?
+  targetVirtues  Virtue[]
+
+  candidates Candidate[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, status])
+}
+
+enum CandidateStatus {
+  BANCO
+  EM_PROCESSO
+  ENTREVISTA
+  PROPOSTA
+  CONTRATADO
+  DESCARTADO
+}
+
+model Candidate {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdById    String?
+  createdBy      User?        @relation("CandidateCreatedBy", fields: [createdById], references: [id])
+  // Vaga para a qual se candidatou (opcional: o candidato pode estar só no banco).
+  openingId      String?
+  opening        JobOpening?  @relation(fields: [openingId], references: [id], onDelete: SetNull)
+
+  name              String
+  email             String?
+  phone             String?
+  linkedinUrl       String?
+  currentRole       String?
+  location          String?
+  source            String?
+  yearsExperience   Int             @default(0)
+  skills            String[]
+  salaryExpectation Int?
+  resumeText        String?         @db.Text
+  notes             String?         @db.Text
+  status            CandidateStatus @default(BANCO)
+
+  // Avaliação da entrevista: nota geral 1–5 e nota por virtude { MAGNANIMIDADE: 4, ... }
+  interviewRating Int?
+  virtueRatings   Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, status])
+  @@index([openingId])
+}
+
+// ─────────────────────────── FEEDBACK ANÔNIMO AO GESTOR ───────────────────────────
+// Anonimato por construção: sem autor, sem IP, sem user-agent e sem horário
+// exato (só a semana). Resultados só são exibidos a partir de N respostas.
+model ManagerFeedback {
+  // UUID aleatório (e não cuid): o cuid embute o horário de criação, o que
+  // desfaria o anonimato de "só a semana do envio".
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  managerId      String
+  manager        User         @relation("ManagerFeedbackManager", fields: [managerId], references: [id], onDelete: Cascade)
+
+  ratings   Json // { clareza: 4, apoio: 5, ... } (1–5)
+  keepText  String?  @db.Text
+  startText String?  @db.Text
+  stopText  String?  @db.Text
+  weekOf    DateTime // segunda-feira da semana do envio (00:00 UTC)
+
+  @@index([organizationId, managerId])
+}
+
+// ─────────────────────────── CENTRAL DE DESENVOLVIMENTO ───────────────────────────
+// Mural de indicações: livros, podcasts, vídeos, cursos etc.
+enum ResourceType {
+  LIVRO
+  PODCAST
+  VIDEO
+  CURSO
+  ARTIGO
+  FERRAMENTA
+  OUTRO
+}
+
+model DevResource {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdById    String?
+  createdBy      User?        @relation("ResourceCreatedBy", fields: [createdById], references: [id])
+
+  type        ResourceType @default(LIVRO)
+  title       String
+  author      String?
+  url         String?
+  description String?      @db.Text
+  focusVirtue Virtue?
+  tags        String[]
+  pinned      Boolean      @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, type])
 }
 
 // ─────────────────────────── AUDITORIA (LGPD) ───────────────────────────

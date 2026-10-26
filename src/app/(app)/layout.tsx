@@ -25,7 +25,7 @@ export default async function AppLayout({
 
   return (
     <div className="flex min-h-screen bg-bg bg-grad-mesh">
-      <Sidebar planLabel={planLabel} />
+      <Sidebar planLabel={planLabel} isAdmin={role === "ADMIN"} />
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="glass sticky top-0 z-20 hidden items-center justify-between border-b border-border px-6 py-3 md:flex">
           <div className="flex items-center gap-2.5">
